@@ -59,14 +59,15 @@ public class Controller {
 		
 		try
 		{
+			//creazione subtabella
 			String query = "CREATE TABLE album1(traccia varchar(30), album text, artista text)";
 			PreparedStatement s = con.prepareStatement(query);
 			s.executeUpdate();
-			
+			//aggiunta pk
 			query = "ALTER TABLE album1 ADD CONSTRAINT album1_pk PRIMARY KEY(album, artista)";
 			s = con.prepareStatement(query);
 			s.executeUpdate();
-			
+			//aggiunta fk
 			query = "ALTER TABLE album1 ADD CONSTRAINT album1_fk FOREIGN KEY(album, artista) REFERENCES album_table (nome_album, artista)";
 			s = con.prepareStatement(query);
 			s.executeUpdate();
