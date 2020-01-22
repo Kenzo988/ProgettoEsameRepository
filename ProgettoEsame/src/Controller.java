@@ -17,6 +17,7 @@ public class Controller {
 		
 		try
 		{
+			//prendo i driver
 			Class.forName("org.postgresql.Driver");
 			System.out.println("Driver trovato");
 		}
@@ -32,6 +33,7 @@ public class Controller {
 		
 		try 
 		{
+			//creazione connessione
 			con = DriverManager.getConnection(url, props);
 			System.out.println("Connesso");
 		}
@@ -42,6 +44,7 @@ public class Controller {
 		
 		try 
 		{
+			//inserimento riga
 			String query = "INSERT INTO album_table " + String.format("VALUES ('%s', '%s', '%s', '%s', %d, %d, ?, ?)", "album","Album1", "Artista1", "bronzo", 15, 124);
 			
 			PreparedStatement s = con.prepareStatement(query);
