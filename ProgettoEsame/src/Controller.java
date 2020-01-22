@@ -50,11 +50,33 @@ public class Controller {
 			s.executeUpdate();
 			
 			s.close();
-			System.out.println("inserito");
+			System.out.println("Inserito");
 		}
 		catch(SQLException e) 
 		{
-			System.err.println("inserimento fallito");
+			System.err.println("Inserimento fallito");
+		}
+		
+		try
+		{
+			String query = "CREATE TABLE album1(traccia varchar(30), album text, artista text)";
+			PreparedStatement s = con.prepareStatement(query);
+			s.executeUpdate();
+			
+			query = "ALTER TABLE album1 ADD CONSTRAINT album1_pk PRIMARY KEY(album, artista)";
+			s = con.prepareStatement(query);
+			s.executeUpdate();
+			
+			query = "ALTER TABLE album1 ADD CONSTRAINT album1_fk FOREIGN KEY(album, artista) REFERENCES album_table (nome_album, artista)";
+			s = con.prepareStatement(query);
+			s.executeUpdate();
+			
+			s.close();
+			System.out.println("Table creata");
+		}
+		catch(SQLException e) 
+		{
+			System.err.println("Creazione table fallito");
 		}
 	}
 
