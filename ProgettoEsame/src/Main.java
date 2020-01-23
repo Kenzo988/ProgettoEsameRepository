@@ -29,8 +29,8 @@ public class Main {
 		connesso = _mycontroller.CreaConnessione(utente, password);
 		}
 		while(!connesso);
-		//--------------------------------------
-		
+		//---------------------------------------
+
 	}
 
 }
