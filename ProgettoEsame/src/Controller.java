@@ -51,7 +51,7 @@ public class Controller {
 		try 
 		{
 			String query;
-			query = "SELECT FROM album_table WHERE nome_album = '"+ nome_album +"', artista = '" + nome_artista +"'";
+			query = "SELECT FROM album_table WHERE nome_album = '"+ nome_album +"' AND artista = '" + nome_artista +"'";
 			PreparedStatement s;
 			s = con.prepareStatement(query);
 			ResultSet rs = s.executeQuery();
