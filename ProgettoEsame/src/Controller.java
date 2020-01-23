@@ -5,12 +5,12 @@ import java.sql.Connection;
 public class Controller 
 {
 	private static Connection con = null;
-	private static ConnessioneDB _myconnessione;
+	private ConnessioneDB _myconnessione;
 	
 	public static void main(String[] args) 
 	{
-		Controller _mycontroller = new Controller();
-		_myconnessione = new ConnessioneDB();
+		Controller _mycontroller = new Controller(new ConnessioneDB());
+		//_mycontroller._myconnessione = ;
 		//boolean connesso = false;
 		//--------------------------------------
 		do 
@@ -28,7 +28,7 @@ public class Controller
 		
 		//nuova connessione
 		//connesso = _mycontroller.CreaConnessione(utente, password);
-		con = _myconnessione.CreaConnessione(utente, password, con);
+		con = _mycontroller._myconnessione.CreaConnessione(utente, password, con);
 		scanner.close();
 		}
 		while(con == null);
@@ -41,6 +41,11 @@ public class Controller
 		
 		Bho bho = new Bho(_mycontroller);
 		bho.frame.setVisible(true);
+	}
+	
+	public Controller(ConnessioneDB cdb) 
+	{
+		_myconnessione = cdb;
 	}
 	
 	public void InserisciAlbum() 
