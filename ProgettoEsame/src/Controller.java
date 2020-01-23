@@ -4,12 +4,13 @@ import java.sql.Connection;
 
 public class Controller 
 {
-	public static Connection con = null;
+	private static Connection con = null;
+	private static ConnessioneDB _myconnessione;
 	
 	public static void main(String[] args) 
 	{
 		Controller _mycontroller = new Controller();
-		ConnessioneDB _myconnessione = new ConnessioneDB();
+		_myconnessione = new ConnessioneDB();
 		//boolean connesso = false;
 		//--------------------------------------
 		do 
@@ -32,14 +33,22 @@ public class Controller
 		}
 		while(con == null);
 		//---------------------------------------
-		_myconnessione.InserisciAlbum("a", "b", con);
-		_myconnessione.InserisciTraccia(1, "a", "b", con);
+		/*_myconnessione.InserisciAlbumDB("a", "b", con);
+		_myconnessione.InserisciTracciaDB(1, "a", "b", con);
 		
-		_myconnessione.InserisciAlbum("b", "b", con);
-		_myconnessione.InserisciTraccia(1, "b", "b", con);
+		_myconnessione.InserisciAlbumDB("b", "b", con);
+		_myconnessione.InserisciTracciaDB(1, "b", "b", con);*/
+		
+		Bho bho = new Bho(_mycontroller);
+		bho.frame.setVisible(true);
 	}
 	
-	public Controller ()
+	public void InserisciAlbum() 
+	{
+		_myconnessione.InserisciAlbumDB("a", "b", con);
+	}
+	
+	public void InserisciTraccia()
 	{
 		
 	}

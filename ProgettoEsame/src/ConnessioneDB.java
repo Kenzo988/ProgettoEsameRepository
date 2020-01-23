@@ -3,7 +3,7 @@ import java.util.*;
 import java.sql.*;
 import java.sql.Date;
 
-public class ConnessioneDB 
+public class ConnessioneDB
 {
 	public Connection CreaConnessione(String utente, String password, Connection con) 
 	{
@@ -44,7 +44,7 @@ public class ConnessioneDB
 		}
 	}
 	
-	public void InserisciAlbum(String nome_album, String nome_artista, Connection con) 
+	public void InserisciAlbumDB(String nome_album, String nome_artista, Connection con) 
 	{
 		try 
 		{
@@ -82,7 +82,7 @@ public class ConnessioneDB
 		}
 	}
 	
-	public void InserisciTraccia(int traccia, String nome_album, String nome_artista, Connection con)
+	public void InserisciTracciaDB(int traccia, String nome_album, String nome_artista, Connection con)
 	{
 		try
 		{
