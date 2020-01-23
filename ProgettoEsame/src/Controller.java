@@ -10,8 +10,6 @@ public class Controller
 	public static void main(String[] args) 
 	{
 		Controller _mycontroller = new Controller(new ConnessioneDB());
-		//_mycontroller._myconnessione = ;
-		//boolean connesso = false;
 		//--------------------------------------
 		do 
 		{
@@ -27,7 +25,6 @@ public class Controller
 		password = scanner.nextLine();
 		
 		//nuova connessione
-		//connesso = _mycontroller.CreaConnessione(utente, password);
 		con = _mycontroller._myconnessione.CreaConnessione(utente, password, con);
 		scanner.close();
 		}
