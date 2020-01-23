@@ -27,10 +27,15 @@ public class Main {
 		
 		//nuova connessione
 		connesso = _mycontroller.CreaConnessione(utente, password);
+		scanner.close();
 		}
 		while(!connesso);
 		//---------------------------------------
-
+		_mycontroller.InserisciAlbum("a", "b");
+		_mycontroller.InserisciTraccia(1, "a", "b");
+		
+		_mycontroller.InserisciAlbum("b", "b");
+		_mycontroller.InserisciTraccia(1, "b", "b");
 	}
 
 }
