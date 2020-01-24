@@ -44,6 +44,117 @@ public class ConnessioneDB
 		}
 	}
 	
+	public Object[][] LetturaDB(String nome_tabella, Connection con)//restituisce i valori del db in un array 2d
+	{
+		try 
+		{
+			String query = "SELECT * FROM " + nome_tabella + ";";
+			
+			PreparedStatement st = con.prepareStatement(query);
+			ResultSet rs = st.executeQuery();
+			//ResultSetMetaData rsmd = rs.getMetaData();
+			int n_colonne = NumeroColonneDB(nome_tabella, con);
+			Object[][] risultati = new Object[NumeroRigheDB(nome_tabella, con)][n_colonne];
+
+			while(rs.next())
+			{
+				for(int j=0; j<n_colonne; j++)
+				{
+					risultati[rs.getRow()-1][j] = rs.getString(j+1);
+				}
+			}
+			rs.close();
+			
+			System.out.println("lettura eseguita");
+			
+			return risultati;
+		}
+		catch(SQLException e) 
+		{
+			System.err.println("lettura fallita");
+			return null;
+		}
+	}
+	
+	public int NumeroRigheDB(String nome_tabella, Connection con)//restituisce il numero di righe
+	{
+		try 
+		{
+			String query = "SELECT COUNT(*) FROM " + nome_tabella + ";";
+			
+			PreparedStatement st = con.prepareStatement(query);
+			ResultSet rs = st.executeQuery();
+			rs.next();
+			
+			return rs.getInt(1);
+		}
+		catch(SQLException e) 
+		{
+			System.err.println("lettura DB fallita");
+			return 0;
+		}
+	}
+	
+	public String[] NomiColonneDB(String nome_tabella, Connection con)//resituisce i nomi delle colonne
+	{
+		try 
+		{
+			ResultSetMetaData rsmd = GetRSMetaData(nome_tabella, con);
+			
+			int n_colonne = rsmd.getColumnCount();
+			String[] colonne = new String[n_colonne];
+			
+			for(int i=0; i<n_colonne; i++)
+			{
+				colonne[i]=rsmd.getColumnName(i+1);
+			}
+			
+			System.out.println("lettura eseguita");
+			
+			return colonne;
+		}
+		catch(SQLException e) 
+		{
+			System.err.println("lettura fallita");
+			return null;
+		}
+	}
+	
+	public int NumeroColonneDB(String nome_tabella, Connection con)//restituisce il numero di colonne
+	{
+		try 
+		{
+			ResultSetMetaData rsmd = GetRSMetaData(nome_tabella, con);
+			
+			int n_colonne = rsmd.getColumnCount();
+			
+			return n_colonne;
+		}
+		catch(SQLException e) 
+		{
+			System.err.println("lettura fallita");
+			return 0;
+		}
+	}
+	
+	ResultSetMetaData GetRSMetaData (String nome_tabella, Connection con)
+	{
+		try 
+		{
+			String query = "SELECT * FROM " + nome_tabella + ";";
+			
+			PreparedStatement st = con.prepareStatement(query);
+			ResultSet rs = st.executeQuery();
+			
+			return rs.getMetaData();
+		}
+		catch(SQLException e) 
+		{
+			System.err.println("lettura fallita");
+			return null;
+		}
+	}
+	
 	public void InserisciAlbumDB(String nome_album, String nome_artista, Connection con) 
 	{
 		try 
