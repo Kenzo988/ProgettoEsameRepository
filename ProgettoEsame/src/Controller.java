@@ -97,8 +97,8 @@ public class Controller
 		_myconnessione.InserisciAlbumDB("a", "b", con);
 	}
 	
-	public void InserisciTraccia()
+	public void InserisciTraccia(int n_traccia, String nome_traccia, String nome_album, String nome_artista)
 	{
-		
+		_myconnessione.InserisciTracciaDB(n_traccia, nome_traccia, nome_album, nome_artista, con);
 	}
 }

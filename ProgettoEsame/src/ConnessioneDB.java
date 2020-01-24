@@ -193,24 +193,20 @@ public class ConnessioneDB
 		}
 	}
 	
-	public void InserisciTracciaDB(int traccia, String nome_album, String nome_artista, Connection con)
+	public void InserisciTracciaDB(int n_traccia, String nome_traccia, String nome_album, String nome_artista, Connection con)
 	{
 		try
 		{
 			String nome_table = "table_" + nome_album;//, check;
-			//check = String.format("SELECT FROM ProgettoEsame  WHERE relname = '?');");
 			PreparedStatement s;
-			//s = con.prepareStatement(check);
-			//s.setString(1, nome_table);
-			//s.executeUpdate();
 			DatabaseMetaData metadata = con.getMetaData();
-			ResultSet rs = metadata.getTables(null, null, nome_table, null);
+			ResultSet rs = metadata.getTables(null , null, nome_table, null);
 			if(!rs.next()) 
 			{
 				try
 				{
 					//creazione subtabella
-					String query = "CREATE TABLE " + nome_table + " (traccia integer, album text, artista text)";
+					String query = "CREATE TABLE " + nome_table + " (n integer, traccia text , album text, artista text, views_traccia integer, retribuzione numeric)";
 					s = con.prepareStatement(query);
 					s.executeUpdate();
 					// aggiunta pk
@@ -230,17 +226,19 @@ public class ConnessioneDB
 				catch (SQLException e) 
 				{
 					System.err.println("creazione tabella fallito");
+					e.printStackTrace();
 				}
 			}
 			// inserimento traccia
 			try 
 			{
-				String query = "INSERT INTO " + nome_table + String.format(" VALUES (?, ?, ?)");
+				String query = "INSERT INTO " + nome_table  + String.format(" VALUES (?, ?, ?, ?, 0, 0)");
 
 				s = con.prepareStatement(query);
-				s.setInt(1, traccia);// numero traccia
-				s.setString(2, nome_album);// nome album
-				s.setString(3, nome_artista);// nome artista
+				s.setInt(1, n_traccia);// numero traccia
+				s.setString(2, nome_traccia);// nome traccia
+				s.setString(3, nome_album);// nome album
+				s.setString(4, nome_artista);// nome artista
 				s.executeUpdate();
 
 				s.close();
@@ -249,6 +247,7 @@ public class ConnessioneDB
 			catch (SQLException e) 
 			{
 				System.err.println("inserimento fallito");
+				e.printStackTrace();
 			}
 		}
 		catch(SQLException e) 
