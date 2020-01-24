@@ -4,9 +4,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.Date;
 
 public class Controller 
 {
@@ -19,14 +17,9 @@ public class Controller
 		//--------------------------------------
 		_mycontroller.Login();
 		//---------------------------------------
-		/*_myconnessione.InserisciAlbumDB("a", "b", con);
-		_myconnessione.InserisciTracciaDB(1, "a", "b", con);
 		
-		_myconnessione.InserisciAlbumDB("b", "b", con);
-		_myconnessione.InserisciTracciaDB(1, "b", "b", con);*/
-		
-		System.out.println("numero righe "+_mycontroller.NumeroRighe("album_table"));
-		System.out.println("numero colonne "+_mycontroller.NumeroColonne("album_table"));
+		//System.out.println("numero righe "+_mycontroller.NumeroRighe("album_table"));
+		//System.out.println("numero colonne "+_mycontroller.NumeroColonne("album_table"));
 		
 		Bho bho = new Bho(_mycontroller);
 		bho.frame.setVisible(true);
@@ -59,7 +52,7 @@ public class Controller
 		while(con == null);
 	}
 	
-	public void AggiornaTabella(JTable table, String nome_tabella)//aggiorna la jtable
+	public void AggiornaTabella(JTable table, String nome_tabella, String nome_colonna_ordine)//aggiorna la jtable
 	{
 		table.setModel(new DefaultTableModel(
 				new Object[][] {
@@ -70,16 +63,16 @@ public class Controller
 		while(table.getRowCount() > 0)
 			((DefaultTableModel) table.getModel()).removeRow(0);
 		
-		Object[][] risultati = Lettura(nome_tabella);
+		Object[][] risultati = Lettura(nome_tabella, nome_colonna_ordine);
 		for(int i=0; i<risultati.length; i++) 
 		{
 			((DefaultTableModel) table.getModel()).addRow(risultati[i]);
 		}
 	}
 	
-	Object[][] Lettura(String nome_tabella)//array con i risultati del db 
+	Object[][] Lettura(String nome_tabella, String nome_colonna_ordine)//array con i risultati del db 
 	{
-		return _myconnessione.LetturaDB(nome_tabella, con);
+		return _myconnessione.LetturaDB(nome_tabella, nome_colonna_ordine, con);
 	}
 	
 	public int NumeroRighe(String nome_tabella)//se serve nel caso
@@ -92,13 +85,23 @@ public class Controller
 		return _myconnessione.NumeroColonneDB(nome_tabella, con);
 	}
 	
-	public void InserisciAlbum() 
+	public void InserisciAlbum(String tipo, String nome_album, String nome_artista, String livello_artista, Date data_pubblicazione) 
 	{
-		_myconnessione.InserisciAlbumDB("a", "b", con);
+		_myconnessione.InserisciAlbumDB(tipo, nome_album, nome_artista, livello_artista, data_pubblicazione, con);
 	}
 	
 	public void InserisciTraccia(int n_traccia, String nome_traccia, String nome_album, String nome_artista)
 	{
 		_myconnessione.InserisciTracciaDB(n_traccia, nome_traccia, nome_album, nome_artista, con);
+	}
+	
+	public void ModificaTraccia(int n_traccia, String nome_traccia, String nome_album)
+	{
+		_myconnessione.ModificaTracciaDB(n_traccia, nome_traccia, nome_album, con);
+	}
+	
+	public void Riordina()
+	{
+		_myconnessione.RiordinaDB("table_a", con);
 	}
 }

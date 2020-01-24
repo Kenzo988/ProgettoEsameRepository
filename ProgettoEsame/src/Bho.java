@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -14,6 +15,7 @@ public class Bho {
 	
 	JFrame frame;
 	private JTable table;
+	private JTable table_1;
 
 	/**
 	 * Launch the application.
@@ -44,44 +46,64 @@ public class Bho {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 679, 316);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JButton AggiungiAlbumButt = new JButton("AggiungiAlbum");
+		JButton AggiungiAlbumButt = new JButton("Aggiungi album");
 		AggiungiAlbumButt.setBounds(10, 64, 132, 42);
 		AggiungiAlbumButt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
 				// = new Controller();
-				ctrl.InserisciAlbum();
-				ctrl.AggiornaTabella(table, "album_table");
+				ctrl.InserisciAlbum("album", "ciccio", "a", "bronzo", Date.valueOf("2001-01-01"));
+				ctrl.AggiornaTabella(table, "album_table", "artista");
 			}
 		});
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().add(AggiungiAlbumButt);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 117, 361, 133);
+		scrollPane.setBounds(0, 117, 367, 133);
 		frame.getContentPane().add(scrollPane);
 		
 		table = new JTable();
 		scrollPane.setViewportView(table);
+		ctrl.AggiornaTabella(table, "album_table", "artista");
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(377, 117, 286, 133);
+		frame.getContentPane().add(scrollPane_1);
+		
+		table_1 = new JTable();
+		scrollPane_1.setViewportView(table_1);
 		
 		JButton AggiungiTraccie = new JButton("Aggiungi traccie");
 		AggiungiTraccie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
 				Object[][] traccie = {
-						{0, "ciao", "a", "b"},
-						{1, "coscos", "a", "b"}
+						{1, "ciao", "a", "b"},
+						{2, "coscos", "a", "b"}
 				};
 				for(int i = 0; i < traccie.length; i++)
 				{
 					ctrl.InserisciTraccia((int)traccie[i][0], traccie[i][1].toString(), traccie[i][2].toString(), traccie[i][3].toString());
 				}
+				ctrl.AggiornaTabella(table_1, "table_a", "n");
 			}
 		});
-		AggiungiTraccie.setBounds(162, 64, 124, 42);
+		AggiungiTraccie.setBounds(152, 64, 124, 42);
 		frame.getContentPane().add(AggiungiTraccie);
+		
+		JButton ModificaTracciaButt = new JButton("Modifica traccia");
+		ModificaTracciaButt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				ctrl.ModificaTraccia(0, "coccco", "a");
+				ctrl.AggiornaTabella(table_1, "table_a", "n");
+			}
+		});
+		ModificaTracciaButt.setBounds(286, 64, 139, 42);
+		frame.getContentPane().add(ModificaTracciaButt);
 	}
 }

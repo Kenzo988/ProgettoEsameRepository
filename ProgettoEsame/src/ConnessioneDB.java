@@ -44,11 +44,11 @@ public class ConnessioneDB
 		}
 	}
 	
-	public Object[][] LetturaDB(String nome_tabella, Connection con)//restituisce i valori del db in un array 2d
+	public Object[][] LetturaDB(String nome_tabella, String nome_colonna_ordine, Connection con)//restituisce i valori del db in un array 2d
 	{
 		try 
 		{
-			String query = "SELECT * FROM " + nome_tabella + ";";
+			String query = "SELECT * FROM " + nome_tabella + " ORDER BY "+ nome_colonna_ordine + " ;";
 			
 			PreparedStatement st = con.prepareStatement(query);
 			ResultSet rs = st.executeQuery();
@@ -64,8 +64,6 @@ public class ConnessioneDB
 				}
 			}
 			rs.close();
-			
-			System.out.println("lettura eseguita");
 			
 			return risultati;
 		}
@@ -108,8 +106,6 @@ public class ConnessioneDB
 			{
 				colonne[i]=rsmd.getColumnName(i+1);
 			}
-			
-			System.out.println("lettura eseguita");
 			
 			return colonne;
 		}
@@ -155,7 +151,7 @@ public class ConnessioneDB
 		}
 	}
 	
-	public void InserisciAlbumDB(String nome_album, String nome_artista, Connection con) 
+	public void InserisciAlbumDB(String tipo, String nome_album, String nome_artista, String livello_artista, Date data_pubblicazione, Connection con) 
 	{
 		try 
 		{
@@ -171,13 +167,13 @@ public class ConnessioneDB
 				query = "INSERT INTO album_table " + String.format("VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
 				s = con.prepareStatement(query);
-				s.setString(1, "ep");// tipo album
+				s.setString(1, tipo);// tipo album
 				s.setString(2, nome_album);// nome album
 				s.setString(3, nome_artista);// nome artista
-				s.setString(4, "bronzo");// livello artista
+				s.setString(4, livello_artista);// livello artista
 				s.setInt(5, 15);// numero follower
 				s.setInt(6, 125);// views totali
-				s.setDate(7, Date.valueOf("2000-01-01"));// data pubblicazione
+				s.setDate(7, data_pubblicazione/*Date.valueOf("2000-01-01")*/);// data pubblicazione
 				s.setFloat(8, 15.55f);// retribuzione
 				s.executeUpdate();
 
@@ -206,7 +202,7 @@ public class ConnessioneDB
 				try
 				{
 					//creazione subtabella
-					String query = "CREATE TABLE " + nome_table + " (n integer, traccia text , album text, artista text, views_traccia integer, retribuzione numeric)";
+					String query = "CREATE TABLE " + nome_table + " (n integer unique, traccia text , album text, artista text, views_traccia integer, retribuzione numeric)";
 					s = con.prepareStatement(query);
 					s.executeUpdate();
 					// aggiunta pk
@@ -232,17 +228,26 @@ public class ConnessioneDB
 			// inserimento traccia
 			try 
 			{
-				String query = "INSERT INTO " + nome_table  + String.format(" VALUES (?, ?, ?, ?, 0, 0)");
-
+				String query = "SELECT traccia FROM " + nome_table + " WHERE traccia = '" + nome_traccia + "' OR n = " + n_traccia;
 				s = con.prepareStatement(query);
-				s.setInt(1, n_traccia);// numero traccia
-				s.setString(2, nome_traccia);// nome traccia
-				s.setString(3, nome_album);// nome album
-				s.setString(4, nome_artista);// nome artista
-				s.executeUpdate();
+				rs= s.executeQuery();
+				if(!rs.next()) 
+				{
+					query = "INSERT INTO " + nome_table + String.format(" VALUES (?, ?, ?, ?, 0, 0)");
+					// + "SELECT FROM " + nome_table + " WHERE traccia <> " + nome_traccia;
 
-				s.close();
-				System.out.println("traccia inserita");
+					s = con.prepareStatement(query);
+					s.setInt(1, n_traccia);// numero traccia
+					s.setString(2, nome_traccia);// nome traccia
+					s.setString(3, nome_album);// nome album
+					s.setString(4, nome_artista);// nome artista
+					s.executeUpdate();
+
+					s.close();
+					System.out.println("traccia inserita");
+				}
+				else
+					System.out.println("traccia già presente");
 			} 
 			catch (SQLException e) 
 			{
@@ -253,6 +258,43 @@ public class ConnessioneDB
 		catch(SQLException e) 
 		{
 			System.err.println("errore sql");
+		}
+	}
+	
+	public void ModificaTracciaDB(int n_traccia, String nome_traccia, String nome_album, Connection con) //per modificare una traccia
+	{
+		try
+		{
+			String nome_table = "table_" + nome_album;
+			String query = "UPDATE " + nome_table + String.format(" SET traccia = ?") + " WHERE n = " + n_traccia;
+			PreparedStatement s = con.prepareStatement(query);
+			s.setString(1, nome_traccia);
+			s.executeUpdate();
+			s.close();
+			System.out.println("update traccia eseguito");
+		}
+		catch(SQLException e) 
+		{
+			System.err.println("errore update");
+			e.printStackTrace();
+		}
+	}
+	
+	public void RiordinaDB(String nome_table, Connection con)
+	{
+		try 
+		{
+			String query = "SELECT * FROM " + nome_table + " ORDER BY n ASC";
+			PreparedStatement s = con.prepareStatement(query);
+			ResultSet rs = s.executeQuery();
+			s.close();
+			rs.close();
+			System.out.println("riodinato");
+		}
+		catch(SQLException e) 
+		{
+			System.err.println("errore riordinamento");
+			e.printStackTrace();
 		}
 	}
 }
