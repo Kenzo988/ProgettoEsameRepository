@@ -52,8 +52,20 @@ public class Controller
 		while(con == null);
 	}
 	
+	/**
+	 * Serve ad aggionare una jtable recuperando dati da un DB, ordinando i dati in base ad una colonna.
+	 * nome_tabella è il nome dell'album che poi verrà formtattato per poterlo usare correttamente nella query.
+	 * nome_colonna_ordine è il nome della colonna che si vuole usare per ordinare
+	*/
 	public void AggiornaTabella(JTable table, String nome_tabella, String nome_colonna_ordine)//aggiorna la jtable
 	{
+		if(nome_tabella.equals(""))
+			nome_tabella = "album_table";
+		if(nome_tabella.equals("album"))
+			nome_tabella = "album_table";
+		else
+			nome_tabella = "table_" + nome_tabella;
+		
 		table.setModel(new DefaultTableModel(
 				new Object[][] {
 				},
@@ -85,9 +97,9 @@ public class Controller
 		return _myconnessione.NumeroColonneDB(nome_tabella, con);
 	}
 	
-	public void InserisciAlbum(String tipo, String nome_album, String nome_artista, String livello_artista, Date data_pubblicazione) 
+	public void InserisciAlbum(String tipo, String nome_album, String nome_artista, String livello_artista, Date data_pubblicazione, Traccia[] traccia) 
 	{
-		_myconnessione.InserisciAlbumDB(tipo, nome_album, nome_artista, livello_artista, data_pubblicazione, con);
+		_myconnessione.InserisciAlbumDB(tipo, nome_album, nome_artista, livello_artista, data_pubblicazione, traccia, con);
 	}
 	
 	public void InserisciTraccia(int n_traccia, String nome_traccia, String nome_album, String nome_artista)

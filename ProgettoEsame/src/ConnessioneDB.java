@@ -151,7 +151,7 @@ public class ConnessioneDB
 		}
 	}
 	
-	public void InserisciAlbumDB(String tipo, String nome_album, String nome_artista, String livello_artista, Date data_pubblicazione, Connection con) 
+	public void InserisciAlbumDB(String tipo, String nome_album, String nome_artista, String livello_artista, Date data_pubblicazione, Traccia[] traccia, Connection con) 
 	{
 		try 
 		{
@@ -186,6 +186,11 @@ public class ConnessioneDB
 		catch(SQLException e) 
 		{
 			System.err.println("inserimento album fallito");
+		}
+		
+		for(int i = 0; i < traccia.length; i++)
+		{
+			InserisciTracciaDB(traccia[i].n_traccia, traccia[i].nome_traccia, nome_album, nome_artista, con);
 		}
 	}
 	

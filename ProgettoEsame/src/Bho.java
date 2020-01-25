@@ -54,9 +54,14 @@ public class Bho {
 		AggiungiAlbumButt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				// = new Controller();
-				ctrl.InserisciAlbum("album", "ciccio", "a", "bronzo", Date.valueOf("2001-01-01"));
-				ctrl.AggiornaTabella(table, "album_table", "artista");
+				Traccia[] traccia = new Traccia[2];
+				traccia[0] = new Traccia(); traccia[1] = new Traccia();
+				traccia[0].n_traccia = 3; traccia[0].nome_traccia = "non lo so"; traccia[0].nome_album = "a"; traccia[0].nome_artista = "b";
+				traccia[1].n_traccia = 4; traccia[1].nome_traccia = "forse se"; traccia[1].nome_album = "a"; traccia[1].nome_artista = "b";
+				
+				ctrl.InserisciAlbum("album", "album_fighissimo", "a", "bronzo", Date.valueOf("2001-01-01"), traccia);
+				ctrl.AggiornaTabella(table, "album", "artista");
+				ctrl.AggiornaTabella(table_1, "album_fighissimo", "n");
 			}
 		});
 		frame.getContentPane().setLayout(null);
@@ -68,7 +73,7 @@ public class Bho {
 		
 		table = new JTable();
 		scrollPane.setViewportView(table);
-		ctrl.AggiornaTabella(table, "album_table", "artista");
+		ctrl.AggiornaTabella(table, "album", "artista");
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(377, 117, 286, 133);
@@ -81,15 +86,16 @@ public class Bho {
 		AggiungiTraccie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				Object[][] traccie = {
-						{1, "ciao", "a", "b"},
-						{2, "coscos", "a", "b"}
-				};
-				for(int i = 0; i < traccie.length; i++)
+				/*Traccia[] traccia = new Traccia[2];
+				traccia[0] = new Traccia(); traccia[1] = new Traccia();
+				traccia[0].n_traccia = 3; traccia[0].nome_traccia = "non lo so"; traccia[0].nome_album = "a"; traccia[0].nome_artista = "b";
+				traccia[1].n_traccia = 4; traccia[1].nome_traccia = "forse se"; traccia[1].nome_album = "a"; traccia[1].nome_artista = "b";
+				
+				for(int i = 0; i < traccia.length; i++)
 				{
-					ctrl.InserisciTraccia((int)traccie[i][0], traccie[i][1].toString(), traccie[i][2].toString(), traccie[i][3].toString());
+					ctrl.InserisciTraccia(traccia[i].n_traccia, traccia[i].nome_traccia, traccia[i].nome_album, traccia[i].nome_artista);
 				}
-				ctrl.AggiornaTabella(table_1, "table_a", "n");
+				ctrl.AggiornaTabella(table_1, "table_a", "n");*/
 			}
 		});
 		AggiungiTraccie.setBounds(152, 64, 124, 42);
@@ -100,7 +106,7 @@ public class Bho {
 			public void actionPerformed(ActionEvent e) 
 			{
 				ctrl.ModificaTraccia(0, "coccco", "a");
-				ctrl.AggiornaTabella(table_1, "table_a", "n");
+				ctrl.AggiornaTabella(table_1, "a", "n");
 			}
 		});
 		ModificaTracciaButt.setBounds(286, 64, 139, 42);
