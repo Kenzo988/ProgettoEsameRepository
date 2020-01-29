@@ -59,7 +59,7 @@ public class Bho {
 				traccia[0].n_traccia = 3; traccia[0].nome_traccia = "non lo so"; traccia[0].nome_album = "a"; traccia[0].nome_artista = "b";
 				traccia[1].n_traccia = 4; traccia[1].nome_traccia = "forse se"; traccia[1].nome_album = "a"; traccia[1].nome_artista = "b";
 				
-				ctrl.InserisciAlbum("album", "album_fighissimo", "a", "bronzo", Date.valueOf("2001-01-01"), traccia);
+				ctrl.InserisciAlbum("album", "se_sei_ancora_in_game", "qdss", "bronzo", Date.valueOf("2001-01-01"), traccia);
 				ctrl.AggiornaTabella(table, "album", "artista");
 				ctrl.AggiornaTabella(table_1, "album_fighissimo", "n");
 			}

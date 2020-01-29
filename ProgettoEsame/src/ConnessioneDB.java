@@ -221,8 +221,11 @@ public class ConnessioneDB
 							+ " FOREIGN KEY(album, artista) REFERENCES album_table (nome_album, artista)";
 					s = con.prepareStatement(query);
 					s.executeUpdate();
-				
+					s.close();
 					System.out.println("tabella creata");
+				
+					//inserimento trigger
+					InserisciTriggerTracciaTable(nome_table, nome_album, nome_artista, con);
 				} 
 				catch (SQLException e) 
 				{
@@ -263,6 +266,56 @@ public class ConnessioneDB
 		catch(SQLException e) 
 		{
 			System.err.println("errore sql");
+		}
+	}
+	
+	void InserisciTriggerTracciaTable(String nome_table, String nome_album, String nome_artista, Connection con) 
+	{
+		//creazione function
+		String nome_function = "function_" + nome_table;
+		try
+		{
+			String query = 
+					"CREATE OR REPLACE FUNCTION public." + nome_function + "() RETURNs trigger LANGUAGE 'plpgsql' VOLATILE COST 100 AS  "+ 
+					"$BODY$BEGIN " + 
+					"UPDATE album_table " + 
+					"SET views_totali = (SELECT SUM(views_traccia) FROM "+ nome_table +") " + 
+					"WHERE nome_album = '" + nome_album +"' AND artista = '" + nome_artista + "'; " + 
+					"RETURN NEW; " + 
+					"END;$BODY$;" +
+					"ALTER FUNCTION public." + nome_function + "() " + 
+					"OWNER TO postgres; ";
+
+			PreparedStatement s = con.prepareStatement(query);
+			
+			s.executeUpdate();
+			s.close();
+		}
+		catch(SQLException e)
+		{
+			System.err.println("inserimento function fallito");
+			e.printStackTrace();
+		}
+		
+		//creazione trigger
+		try
+		{
+			String query =
+					"CREATE TRIGGER " + "trigger_"+ nome_table + " " + 
+					"AFTER UPDATE OF views_traccia " + 
+					"ON " + nome_table + " "+ 
+					"FOR EACH ROW " + 
+					"EXECUTE PROCEDURE public." + nome_function +"();";
+			
+			PreparedStatement s = con.prepareStatement(query);
+			
+			s.executeUpdate();
+			s.close();
+		}
+		catch(SQLException e)
+		{
+			System.err.println("inserimento trigger fallito");
+			e.printStackTrace();
 		}
 	}
 	
