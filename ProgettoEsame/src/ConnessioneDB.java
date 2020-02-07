@@ -153,6 +153,9 @@ public class ConnessioneDB
 	
 	public void InserisciAlbumDB(String tipo, String nome_album, String nome_artista, String livello_artista, Date data_pubblicazione, Traccia[] traccia, Connection con) 
 	{
+		//inserisci controllo se esiste artista
+		//numero followers è preso dalla tabella artista
+		//la retribuzione è calcolato
 		try 
 		{
 			String query;
@@ -198,7 +201,7 @@ public class ConnessioneDB
 	{
 		try
 		{
-			String nome_table = "table_" + nome_album;//, check;
+			String nome_table = "table_" + nome_album + "_" + nome_artista;//, check;
 			PreparedStatement s;
 			DatabaseMetaData metadata = con.getMetaData();
 			ResultSet rs = metadata.getTables(null , null, nome_table, null);
@@ -206,7 +209,7 @@ public class ConnessioneDB
 			{
 				try
 				{
-					//creazione subtabella
+					//creazione tabella
 					String query = "CREATE TABLE " + nome_table + " (n integer unique, traccia text , album text, artista text, views_traccia integer, retribuzione numeric)";
 					s = con.prepareStatement(query);
 					s.executeUpdate();
@@ -218,7 +221,7 @@ public class ConnessioneDB
 					// aggiunta fk
 					String nome_fk = nome_table + "_fk";
 					query = "ALTER TABLE " + nome_table + " ADD CONSTRAINT " + nome_fk
-							+ " FOREIGN KEY(album, artista) REFERENCES album_table (nome_album, artista)";
+							+ " FOREIGN KEY(album, artista) REFERENCES album_table (nome_album, artista) ON DELETE CASCADE";
 					s = con.prepareStatement(query);
 					s.executeUpdate();
 					s.close();
@@ -236,7 +239,7 @@ public class ConnessioneDB
 			// inserimento traccia
 			try 
 			{
-				String query = "SELECT traccia FROM " + nome_table + " WHERE traccia = '" + nome_traccia + "' OR n = " + n_traccia;
+				String query = "SELECT traccia FROM " + nome_table + " WHERE traccia = '" + nome_traccia + "'";// OR n = " + n_traccia;
 				s = con.prepareStatement(query);
 				rs= s.executeQuery();
 				if(!rs.next()) 
@@ -245,7 +248,7 @@ public class ConnessioneDB
 					// + "SELECT FROM " + nome_table + " WHERE traccia <> " + nome_traccia;
 
 					s = con.prepareStatement(query);
-					s.setInt(1, n_traccia);// numero traccia
+					s.setInt(1, NumeroRigheDB(nome_table, con) + 1);// numero traccia
 					s.setString(2, nome_traccia);// nome traccia
 					s.setString(3, nome_album);// nome album
 					s.setString(4, nome_artista);// nome artista
@@ -338,7 +341,85 @@ public class ConnessioneDB
 		}
 	}
 	
-	public void RiordinaDB(String nome_table, Connection con)
+	public void InserisciArtista(String nome_artista, Connection con)
+	{
+		try
+		{
+			String query = "SELECT * FROM artista_table WHERE nome_artista = ?";
+			PreparedStatement s = con.prepareStatement(query);
+			s.setString(1, nome_artista);
+			ResultSet rs = s.executeQuery();
+			if(!rs.next())
+			{
+				query = "INSERT INTO artista_table VALUES(?, 0)";
+				s = con.prepareStatement(query);
+				s.setString(1, nome_artista);
+				s.executeUpdate();
+				s.close();
+				System.out.println("artista inserito");
+			}
+			else
+				System.out.println("artista già esistente");
+			rs.close();
+		}
+		catch(SQLException e)
+		{
+			System.err.println("errore insert artista");
+			e.printStackTrace();
+		}
+	}
+	
+	public void EliminaArtista(String nome_artista, Connection con)
+	{
+		try
+		{
+			String query = "DELETE FROM artista_table WHERE nome_artista = ?";
+			PreparedStatement s = con.prepareStatement(query);
+			s.setString(1, nome_artista);
+			s.executeUpdate();
+			s.close();
+		}
+		catch(SQLException e)
+		{
+			System.err.println("errore delete artista");
+			e.printStackTrace();
+		}
+	}
+	
+	public void EliminaAlbum()
+	{
+		
+	}
+	
+	public void EliminaTraccia(int n_traccia, String nome_album, String nome_artista, Connection con)
+	{
+		try
+		{
+			//elimino
+			String nome_table = "table_" + nome_album + "_" + nome_artista;
+			String query = "DELETE FROM " + nome_table + " WHERE n = ?";
+			PreparedStatement s = con.prepareStatement(query);
+			s.setInt(1, n_traccia);
+			s.execute();
+			//aggiorno numero traccia
+			for(int i = 0; i <= NumeroRigheDB(nome_table, con); i++) 
+			{
+				query = "UPDATE " + nome_table + " SET n = n - 1" + " WHERE n = ? + ?";
+				s = con.prepareStatement(query);
+				s.setInt(1, n_traccia);
+				s.setInt(2, i);
+				s.executeUpdate();
+			}
+			s.close();
+		}
+		catch(SQLException e)
+		{
+			System.err.println("errore delete traccia");
+			e.printStackTrace();
+		}
+	}
+	
+	/*public void RiordinaDB(String nome_table, Connection con)
 	{
 		try 
 		{
@@ -354,5 +435,5 @@ public class ConnessioneDB
 			System.err.println("errore riordinamento");
 			e.printStackTrace();
 		}
-	}
+	}*/
 }

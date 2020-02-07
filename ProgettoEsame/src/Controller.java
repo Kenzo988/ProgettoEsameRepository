@@ -30,7 +30,9 @@ public class Controller
 		_myconnessione = new ConnessioneDB();
 	}
 	
-	void Login() 
+	/**effettua il login al database con un nome utente e password
+	*/
+	public void Login() 
 	{
 		do 
 		{
@@ -55,6 +57,7 @@ public class Controller
 	/**
 	 * Serve ad aggionare una jtable recuperando dati da un DB, ordinando i dati in base ad una colonna.
 	 * nome_tabella è il nome dell'album che poi verrà formtattato per poterlo usare correttamente nella query.
+	 * (il nome dell'album è compreso del nome dell'artista con un underscore es(nomealbum_nomeartista))
 	 * nome_colonna_ordine è il nome della colonna che si vuole usare per ordinare
 	*/
 	public void AggiornaTabella(JTable table, String nome_tabella, String nome_colonna_ordine)//aggiorna la jtable
@@ -63,7 +66,7 @@ public class Controller
 			nome_tabella = "album_table";
 		if(nome_tabella.equals("album"))
 			nome_tabella = "album_table";
-		else
+		else if(!nome_tabella.equals("artista_table"))
 			nome_tabella = "table_" + nome_tabella;
 		
 		table.setModel(new DefaultTableModel(
@@ -87,33 +90,58 @@ public class Controller
 		return _myconnessione.LetturaDB(nome_tabella, nome_colonna_ordine, con);
 	}
 	
+	/** restituisce il numero di righe di una tabella
+	*/
 	public int NumeroRighe(String nome_tabella)//se serve nel caso
 	{
 		return _myconnessione.NumeroRigheDB(nome_tabella, con);
 	}
 	
+	/** restituisce il numero di colonne di una tabella
+	*/
 	public int NumeroColonne(String nome_tabella)//se serve nel caso
 	{
 		return _myconnessione.NumeroColonneDB(nome_tabella, con);
 	}
 	
+	/** 
+	*/
 	public void InserisciAlbum(String tipo, String nome_album, String nome_artista, String livello_artista, Date data_pubblicazione, Traccia[] traccia) 
 	{
 		_myconnessione.InserisciAlbumDB(tipo, nome_album, nome_artista, livello_artista, data_pubblicazione, traccia, con);
 	}
 	
+	/** 
+	*/
 	public void InserisciTraccia(int n_traccia, String nome_traccia, String nome_album, String nome_artista)
 	{
 		_myconnessione.InserisciTracciaDB(n_traccia, nome_traccia, nome_album, nome_artista, con);
 	}
 	
+	/** modifica il nome di una traccia
+	*/
 	public void ModificaTraccia(int n_traccia, String nome_traccia, String nome_album)
 	{
 		_myconnessione.ModificaTracciaDB(n_traccia, nome_traccia, nome_album, con);
 	}
 	
+	public void InserisciArtista(String nome_artista)
+	{
+		_myconnessione.InserisciArtista(nome_artista, con);
+	}
+	
+	public void EliminaArtista(String nome_artista)
+	{
+		_myconnessione.EliminaArtista(nome_artista, con);
+	}
+	
+	public void EliminaTraccia(int n_traccia, String nome_album, String nome_artista)
+	{
+		_myconnessione.EliminaTraccia(n_traccia, nome_album, nome_artista, con);
+	}
+	
 	public void Riordina()
 	{
-		_myconnessione.RiordinaDB("table_a", con);
+		//_myconnessione.RiordinaDB("table_a", con);
 	}
 }
