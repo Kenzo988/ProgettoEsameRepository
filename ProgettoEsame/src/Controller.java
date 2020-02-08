@@ -6,7 +6,7 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.Connection;
 import java.sql.Date;
 
-public class Controller 
+public class Controller implements DBDAO
 {
 	private static Connection con = null;
 	private ConnessioneDB _myconnessione;
@@ -59,8 +59,9 @@ public class Controller
 	 * nome_tabella è il nome dell'album che poi verrà formtattato per poterlo usare correttamente nella query.
 	 * (il nome dell'album è compreso del nome dell'artista con un underscore es(nomealbum_nomeartista))
 	 * nome_colonna_ordine è il nome della colonna che si vuole usare per ordinare
+	 * crescente è per specificare il tipo di ordine
 	*/
-	public void AggiornaTabella(JTable table, String nome_tabella, String nome_colonna_ordine)//aggiorna la jtable
+	public void AggiornaTabella(JTable table, String nome_tabella, String nome_colonna_ordine, boolean crescente)//aggiorna la jtable
 	{
 		if(nome_tabella.equals(""))
 			nome_tabella = "album_table";
@@ -78,44 +79,45 @@ public class Controller
 		while(table.getRowCount() > 0)
 			((DefaultTableModel) table.getModel()).removeRow(0);
 		
-		Object[][] risultati = Lettura(nome_tabella, nome_colonna_ordine);
+		Object[][] risultati = Lettura(nome_tabella, nome_colonna_ordine, crescente);
 		for(int i=0; i<risultati.length; i++) 
 		{
 			((DefaultTableModel) table.getModel()).addRow(risultati[i]);
 		}
 	}
 	
-	Object[][] Lettura(String nome_tabella, String nome_colonna_ordine)//array con i risultati del db 
+	Object[][] Lettura(String nome_tabella, String nome_colonna_ordine, boolean crescente)//array con i risultati del db 
 	{
-		return _myconnessione.LetturaDB(nome_tabella, nome_colonna_ordine, con);
+		return _myconnessione.LetturaDB(nome_tabella, nome_colonna_ordine, crescente, con);
 	}
 	
-	/** restituisce il numero di righe di una tabella
+	/** restituisce il numero di righe di una tabella (nomeTabella_nomeArtista)
 	*/
 	public int NumeroRighe(String nome_tabella)//se serve nel caso
 	{
 		return _myconnessione.NumeroRigheDB(nome_tabella, con);
 	}
 	
-	/** restituisce il numero di colonne di una tabella
+	/** restituisce il numero di colonne di una tabella (nomeTabella_nomeArtista)
 	*/
 	public int NumeroColonne(String nome_tabella)//se serve nel caso
 	{
 		return _myconnessione.NumeroColonneDB(nome_tabella, con);
 	}
 	
-	/** 
+	/** inserisce un album andando compreso di traccie
+	 * tipo indica se è un ep/singolo/album
 	*/
-	public void InserisciAlbum(String tipo, String nome_album, String nome_artista, String livello_artista, Date data_pubblicazione, Traccia[] traccia) 
+	public void InserisciAlbum(String tipo, String nome_album, String nome_artista, Date data_pubblicazione, Traccia[] traccia) 
 	{
-		_myconnessione.InserisciAlbumDB(tipo, nome_album, nome_artista, livello_artista, data_pubblicazione, traccia, con);
+		_myconnessione.InserisciAlbumDB(tipo, nome_album, nome_artista, data_pubblicazione, traccia, con);
 	}
 	
-	/** 
+	/** inserisce una traccia singolo in un album
 	*/
-	public void InserisciTraccia(int n_traccia, String nome_traccia, String nome_album, String nome_artista)
+	public void InserisciTraccia(String nome_traccia, String nome_album, String nome_artista)
 	{
-		_myconnessione.InserisciTracciaDB(n_traccia, nome_traccia, nome_album, nome_artista, con);
+		_myconnessione.InserisciTracciaDB(nome_traccia, nome_album, nome_artista, con);
 	}
 	
 	/** modifica il nome di una traccia
@@ -125,23 +127,31 @@ public class Controller
 		_myconnessione.ModificaTracciaDB(n_traccia, nome_traccia, nome_album, con);
 	}
 	
+	/** inserisce un nuovo artista
+	*/
 	public void InserisciArtista(String nome_artista)
 	{
 		_myconnessione.InserisciArtista(nome_artista, con);
 	}
 	
+	/** elimina un artista e tutti gli album ad esso collegati
+	*/
 	public void EliminaArtista(String nome_artista)
 	{
 		_myconnessione.EliminaArtista(nome_artista, con);
 	}
 	
+	/** elimina l'album e la tabella delle traccie
+	*/
+	public void EliminaAlbum(String nome_album, String nome_artista)
+	{
+		_myconnessione.EliminaAlbum(nome_album, nome_artista, con);
+	}
+	
+	/** elimina una singola traccia
+	*/
 	public void EliminaTraccia(int n_traccia, String nome_album, String nome_artista)
 	{
 		_myconnessione.EliminaTraccia(n_traccia, nome_album, nome_artista, con);
-	}
-	
-	public void Riordina()
-	{
-		//_myconnessione.RiordinaDB("table_a", con);
 	}
 }

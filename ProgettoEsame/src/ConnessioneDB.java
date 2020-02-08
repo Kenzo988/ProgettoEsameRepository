@@ -44,15 +44,20 @@ public class ConnessioneDB
 		}
 	}
 	
-	public Object[][] LetturaDB(String nome_tabella, String nome_colonna_ordine, Connection con)//restituisce i valori del db in un array 2d
+	public Object[][] LetturaDB(String nome_tabella, String nome_colonna_ordine, boolean crescente, Connection con)//restituisce i valori del db in un array 2d
 	{
 		try 
 		{
-			String query = "SELECT * FROM " + nome_tabella + " ORDER BY "+ nome_colonna_ordine + " ;";
+			String specifica_ordine;
+			if(crescente)
+				specifica_ordine = " ASC";
+			else
+				specifica_ordine = " DESC";
+			
+			String query = "SELECT * FROM " + nome_tabella + " ORDER BY "+ nome_colonna_ordine + specifica_ordine + ";";
 			
 			PreparedStatement st = con.prepareStatement(query);
 			ResultSet rs = st.executeQuery();
-			//ResultSetMetaData rsmd = rs.getMetaData();
 			int n_colonne = NumeroColonneDB(nome_tabella, con);
 			Object[][] risultati = new Object[NumeroRigheDB(nome_tabella, con)][n_colonne];
 
@@ -151,11 +156,8 @@ public class ConnessioneDB
 		}
 	}
 	
-	public void InserisciAlbumDB(String tipo, String nome_album, String nome_artista, String livello_artista, Date data_pubblicazione, Traccia[] traccia, Connection con) 
+	public void InserisciAlbumDB(String tipo, String nome_album, String nome_artista, Date data_pubblicazione, Traccia[] traccia, Connection con) 
 	{
-		//inserisci controllo se esiste artista
-		//numero followers è preso dalla tabella artista
-		//la retribuzione è calcolato
 		try 
 		{
 			String query;
@@ -167,17 +169,13 @@ public class ConnessioneDB
 			if(!rs.next()) 
 			{
 				// inserimento album
-				query = "INSERT INTO album_table " + String.format("VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+				query = "INSERT INTO album_table (tipo, nome_album, artista, views_totali, data_pubblicazione)" + String.format("VALUES (?, ?, ?, 0, ?)");
 
 				s = con.prepareStatement(query);
 				s.setString(1, tipo);// tipo album
 				s.setString(2, nome_album);// nome album
 				s.setString(3, nome_artista);// nome artista
-				s.setString(4, livello_artista);// livello artista
-				s.setInt(5, 15);// numero follower
-				s.setInt(6, 125);// views totali
-				s.setDate(7, data_pubblicazione/*Date.valueOf("2000-01-01")*/);// data pubblicazione
-				s.setFloat(8, 15.55f);// retribuzione
+				s.setDate(4, data_pubblicazione/*Date.valueOf("2000-01-01")*/);// data pubblicazione
 				s.executeUpdate();
 
 				s.close();
@@ -193,15 +191,15 @@ public class ConnessioneDB
 		
 		for(int i = 0; i < traccia.length; i++)
 		{
-			InserisciTracciaDB(traccia[i].n_traccia, traccia[i].nome_traccia, nome_album, nome_artista, con);
+			InserisciTracciaDB(traccia[i].nome_traccia, nome_album, nome_artista, con);
 		}
 	}
 	
-	public void InserisciTracciaDB(int n_traccia, String nome_traccia, String nome_album, String nome_artista, Connection con)
+	public void InserisciTracciaDB(String nome_traccia, String nome_album, String nome_artista, Connection con)
 	{
 		try
 		{
-			String nome_table = "table_" + nome_album + "_" + nome_artista;//, check;
+			String nome_table = "table_" + nome_album + "_" + nome_artista;
 			PreparedStatement s;
 			DatabaseMetaData metadata = con.getMetaData();
 			ResultSet rs = metadata.getTables(null , null, nome_table, null);
@@ -213,11 +211,6 @@ public class ConnessioneDB
 					String query = "CREATE TABLE " + nome_table + " (n integer unique, traccia text , album text, artista text, views_traccia integer, retribuzione numeric)";
 					s = con.prepareStatement(query);
 					s.executeUpdate();
-					// aggiunta pk
-					/*String nome_pk = nome_table + "_pk";
-					query = "ALTER TABLE " + nome_table + " ADD CONSTRAINT " + nome_pk + " PRIMARY KEY(traccia)";
-					s = con.prepareStatement(query);
-					s.executeUpdate();*/
 					// aggiunta fk
 					String nome_fk = nome_table + "_fk";
 					query = "ALTER TABLE " + nome_table + " ADD CONSTRAINT " + nome_fk
@@ -239,8 +232,9 @@ public class ConnessioneDB
 			// inserimento traccia
 			try 
 			{
-				String query = "SELECT traccia FROM " + nome_table + " WHERE traccia = '" + nome_traccia + "'";// OR n = " + n_traccia;
+				String query = "SELECT traccia FROM " + nome_table + " WHERE traccia = ?";
 				s = con.prepareStatement(query);
+				s.setString(1, nome_traccia);
 				rs= s.executeQuery();
 				if(!rs.next()) 
 				{
@@ -371,6 +365,32 @@ public class ConnessioneDB
 	
 	public void EliminaArtista(String nome_artista, Connection con)
 	{
+		//drop album
+		try
+		{
+			String query = "SELECT * FROM album_table WHERE artista = ?";
+			PreparedStatement s = con.prepareStatement(query);
+			s.setString(1, nome_artista);
+			ResultSet rs = s.executeQuery();
+			while(rs.next())
+			{
+				//drop table
+				query = "DROP TABLE " + "table_" + rs.getString(2) + "_" + nome_artista;
+				s = con.prepareStatement(query);
+				s.executeUpdate();
+				//drop function
+				query = "DROP FUNCTION " + "function_table_" + rs.getString(2) + "_" + nome_artista;
+				s = con.prepareStatement(query);
+				s.executeUpdate();
+			}
+			s.close();
+		}
+		catch(SQLException e)
+		{
+			System.err.println("errore recupero ed eliminazione album");
+			e.printStackTrace();
+		}
+		//elimina arista
 		try
 		{
 			String query = "DELETE FROM artista_table WHERE nome_artista = ?";
@@ -378,6 +398,7 @@ public class ConnessioneDB
 			s.setString(1, nome_artista);
 			s.executeUpdate();
 			s.close();
+			System.out.println("artista eliminato");
 		}
 		catch(SQLException e)
 		{
@@ -386,9 +407,33 @@ public class ConnessioneDB
 		}
 	}
 	
-	public void EliminaAlbum()
+	public void EliminaAlbum(String nome_album, String nome_artista, Connection con)
 	{
-		
+		try 
+		{
+			String query;
+			PreparedStatement s;
+			// drop table
+			query = "DROP TABLE " + "table_" + nome_album + "_" + nome_artista;
+			s = con.prepareStatement(query);
+			s.executeUpdate();
+			// drop function
+			query = "DROP FUNCTION " + "function_table_" + nome_album + "_" + nome_artista;
+			s = con.prepareStatement(query);
+			s.executeUpdate();
+			//delete album
+			query = "DELETE FROM album_table WHERE nome_album = ? AND artista = ?";
+			s = con.prepareStatement(query);
+			s.setString(1, nome_album);
+			s.setString(2, nome_artista);
+			s.executeUpdate();
+			
+			s.close();
+			System.out.println("album eliminato");			
+		} catch (SQLException e) {
+			System.err.println("errore recupero ed eliminazione album");
+			e.printStackTrace();
+		}
 	}
 	
 	public void EliminaTraccia(int n_traccia, String nome_album, String nome_artista, Connection con)
@@ -418,22 +463,4 @@ public class ConnessioneDB
 			e.printStackTrace();
 		}
 	}
-	
-	/*public void RiordinaDB(String nome_table, Connection con)
-	{
-		try 
-		{
-			String query = "SELECT * FROM " + nome_table + " ORDER BY n ASC";
-			PreparedStatement s = con.prepareStatement(query);
-			ResultSet rs = s.executeQuery();
-			s.close();
-			rs.close();
-			System.out.println("riodinato");
-		}
-		catch(SQLException e) 
-		{
-			System.err.println("errore riordinamento");
-			e.printStackTrace();
-		}
-	}*/
 }

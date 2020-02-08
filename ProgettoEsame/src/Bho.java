@@ -62,9 +62,9 @@ public class Bho {
 				traccia[1].n_traccia = 2; traccia[1].nome_traccia = "forse se"; traccia[1].nome_album = "cose"; traccia[1].nome_artista = "kenzo";
 				traccia[2].n_traccia = 3; traccia[2].nome_traccia = "forse no"; traccia[1].nome_album = "cose"; traccia[1].nome_artista = "kenzo";
 				
-				ctrl.InserisciAlbum("album", "cose", "kenzo", "bronzo", Date.valueOf("2001-01-01"), traccia);
-				ctrl.AggiornaTabella(table, "album", "artista");
-				ctrl.AggiornaTabella(table_1, "cose_kenzo", "n");
+				ctrl.InserisciAlbum("album", "cose", "kenzo", Date.valueOf("2001-01-01"), traccia);
+				ctrl.AggiornaTabella(table, "album", "artista", true);
+				ctrl.AggiornaTabella(table_1, "cose_kenzo", "n", true);
 			}
 		});
 		frame.getContentPane().setLayout(null);
@@ -76,7 +76,7 @@ public class Bho {
 		
 		table = new JTable();
 		scrollPane.setViewportView(table);
-		ctrl.AggiornaTabella(table, "album", "artista");
+		ctrl.AggiornaTabella(table, "album", "artista", true);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(377, 117, 286, 133);
@@ -89,8 +89,8 @@ public class Bho {
 		AggiungiTraccie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				ctrl.InserisciTraccia(3, "ciao", "cose", "kenzo");
-				ctrl.AggiornaTabella(table_1, "cose_kenzo", "n");
+				ctrl.InserisciTraccia("ciao", "cose", "kenzo");
+				ctrl.AggiornaTabella(table_1, "cose_kenzo", "n", true);
 				/*Traccia[] traccia = new Traccia[2];
 				traccia[0] = new Traccia(); traccia[1] = new Traccia();
 				traccia[0].n_traccia = 3; traccia[0].nome_traccia = "non lo so"; traccia[0].nome_album = "a"; traccia[0].nome_artista = "b";
@@ -111,7 +111,7 @@ public class Bho {
 			public void actionPerformed(ActionEvent e) 
 			{
 				ctrl.ModificaTraccia(1, "prima_canzone", "cose_kenzo");
-				ctrl.AggiornaTabella(table_1, "cose_kenzo", "n");
+				ctrl.AggiornaTabella(table_1, "cose_kenzo", "n", true);
 			}
 		});
 		ModificaTracciaButt.setBounds(286, 64, 139, 42);
@@ -123,13 +123,13 @@ public class Bho {
 		
 		table_2 = new JTable();
 		scrollPane_2.setViewportView(table_2);
-		ctrl.AggiornaTabella(table_2, "artista_table", "followers_artista");
+		ctrl.AggiornaTabella(table_2, "artista_table", "followers_artista", true);
 		
 		JButton EliminaArtista = new JButton("EliminaArtista");
 		EliminaArtista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ctrl.EliminaArtista("kenzo");
-				ctrl.AggiornaTabella(table_2, "artista_table", "followers_artista");
+				ctrl.AggiornaTabella(table_2, "artista_table", "followers_artista", true);
 			}
 		});
 		EliminaArtista.setBounds(673, 64, 119, 42);
@@ -140,7 +140,7 @@ public class Bho {
 			public void actionPerformed(ActionEvent e) 
 			{
 				ctrl.InserisciArtista("kenzo");
-				ctrl.AggiornaTabella(table_2, "artista_table", "followers_artista");
+				ctrl.AggiornaTabella(table_2, "artista_table", "followers_artista", true);
 			}
 		});
 		AggiungiArtista.setBounds(673, 11, 119, 42);
@@ -151,10 +151,21 @@ public class Bho {
 			public void actionPerformed(ActionEvent e) 
 			{
 				ctrl.EliminaTraccia(1, "cose", "kenzo");
-				ctrl.AggiornaTabella(table_1, "cose_kenzo", "n");
+				ctrl.AggiornaTabella(table_1, "cose_kenzo", "n", true);
 			}
 		});
 		EliminaTraccia.setBounds(435, 64, 124, 42);
 		frame.getContentPane().add(EliminaTraccia);
+		
+		JButton EliminaAlbum = new JButton("Elimina Album");
+		EliminaAlbum.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				ctrl.EliminaAlbum("cose", "kenzo");
+				ctrl.AggiornaTabella(table, "album", "artista", true);
+			}
+		});
+		EliminaAlbum.setBounds(10, 23, 132, 35);
+		frame.getContentPane().add(EliminaAlbum);
 	}
 }
