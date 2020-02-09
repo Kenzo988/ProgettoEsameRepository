@@ -109,10 +109,11 @@ public class InserimentoAlbumFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(flag==false)
-			    textField.setText("");
-			    textField_2.setText("");
+			    
 
 				AggiungiAlbum();
+				textField.setText("");
+			    textField_2.setText("");
 			}
 
 			
@@ -126,7 +127,7 @@ public class InserimentoAlbumFrame extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			    textField_1.setText("");
+			    
 				aggiungiTraccia();
 			}
 
@@ -179,18 +180,14 @@ public class InserimentoAlbumFrame extends JFrame {
 		getContentPane().add(scrollPane2);
 		
 		table_1 = new JTable();
-		table_1.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "N° Traccia", "Nome Traccia" }) {
-			              /**
-                          * 
-                          */
-                          private static final long serialVersionUID = 1L;
-                          @SuppressWarnings("rawtypes")
-                          Class[] columnTypes = new Class[] { Integer.class, String.class };
-
-                          public Class<?> getColumnClass(int columnIndex) {
-                          return columnTypes[columnIndex];
-                          }
-                         });
+		table_1.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"N\u00B0 Traccia", "Nome Traccia"
+			}
+		));
+		table_1.getColumnModel().getColumn(0).setMaxWidth(100);
 		
 		ColumnRender();
 		scrollPane.setViewportView(table);
@@ -228,7 +225,8 @@ public class InserimentoAlbumFrame extends JFrame {
 	    if(dtm.getColumnCount()==2) {
 	    	dtm.addRow(new Object[] {i, textField_1.getText()});
 	    }
-	   
+		textField_1.setText("");
+
 	    System.out.println("tracce aggiunte: "+textField_1.getText());
 	}
 	
