@@ -109,6 +109,9 @@ public class InserimentoAlbumFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(flag==false)
+			    textField.setText("");
+			    textField_2.setText("");
+
 				AggiungiAlbum();
 			}
 
@@ -123,7 +126,7 @@ public class InserimentoAlbumFrame extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+			    textField_1.setText("");
 				aggiungiTraccia();
 			}
 
