@@ -23,10 +23,10 @@ public class InserimentoAlbumFrame extends JFrame {
 	private Traccia[] traccia;
 	private Album album;
 	private JFrame frame;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField nomeArtista;
+	private JTextField nomeTraccia;
 	private JTable table;
-	private JTextField textField_2;
+	private JTextField nomeAlbum;
     private String[] tipoAlbum = { "EP" , "Album"};
     private JComboBox<String> comboBox;
 	private boolean flag=false;
@@ -69,20 +69,20 @@ public class InserimentoAlbumFrame extends JFrame {
 		getContentPane().add(lblNomeart);
 		
 		
-		textField = new JTextField();
-		textField.setBounds(207, 61, 126, 20);
-		getContentPane().add(textField);
-		textField.setColumns(10);
+		nomeArtista = new JTextField();
+		nomeArtista.setBounds(207, 61, 126, 20);
+		getContentPane().add(nomeArtista);
+		nomeArtista.setColumns(10);
 		
 		
 		JLabel lblNomeAlbum = new JLabel("Nome Album:");
 		lblNomeAlbum.setBounds(106, 91, 91, 14);
 		getContentPane().add(lblNomeAlbum);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(207, 88, 126, 20);
-		getContentPane().add(textField_2);
+		nomeAlbum = new JTextField();
+		nomeAlbum.setColumns(10);
+		nomeAlbum.setBounds(207, 88, 126, 20);
+		getContentPane().add(nomeAlbum);
 		
 		JLabel lblAggiungitraccia = new JLabel("Aggiungi Traccia:");
 		lblAggiungitraccia.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -93,10 +93,10 @@ public class InserimentoAlbumFrame extends JFrame {
 		lblNomeTraccia.setBounds(106, 142, 91, 14);
 		getContentPane().add(lblNomeTraccia);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(207, 139, 126, 20);
-		getContentPane().add(textField_1);
+		nomeTraccia = new JTextField();
+		nomeTraccia.setColumns(10);
+		nomeTraccia.setBounds(207, 139, 126, 20);
+		getContentPane().add(nomeTraccia);
 		
 		JButton btnSalvaAlbum = new JButton("Salva Album");
 		btnSalvaAlbum.setBounds(343, 32, 107, 73);
@@ -112,8 +112,8 @@ public class InserimentoAlbumFrame extends JFrame {
 			    
 
 				AggiungiAlbum();
-				textField.setText("");
-			    textField_2.setText("");
+				nomeArtista.setText("");
+			    nomeAlbum.setText("");
 			}
 
 			
@@ -199,8 +199,8 @@ public class InserimentoAlbumFrame extends JFrame {
 
 	
 	private void AggiungiAlbum() {
-        album = new Album(comboBox.getItemAt(comboBox.getSelectedIndex()),textField_2.getText(),
-                				textField.getText(), 0.0, getdata(),0 , 0);
+        album = new Album(comboBox.getItemAt(comboBox.getSelectedIndex()),nomeAlbum.getText(),
+                				nomeArtista.getText(), 0.0, getdata(),0 , 0);
        
         
         DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
@@ -223,11 +223,11 @@ public class InserimentoAlbumFrame extends JFrame {
 	
 		DefaultTableModel dtm = (DefaultTableModel) this.table_1.getModel();
 	    if(dtm.getColumnCount()==2) {
-	    	dtm.addRow(new Object[] {i, textField_1.getText()});
+	    	dtm.addRow(new Object[] {i, nomeTraccia.getText()});
 	    }
-		textField_1.setText("");
+		nomeTraccia.setText("");
 
-	    System.out.println("tracce aggiunte: "+textField_1.getText());
+	    System.out.println("tracce aggiunte: "+nomeTraccia.getText());
 	}
 	
 	
