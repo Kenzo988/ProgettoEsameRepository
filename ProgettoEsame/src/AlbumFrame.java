@@ -3,12 +3,23 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+
+
 import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+
+import javax.swing.BoxLayout;
+import java.awt.Component;
+import javax.swing.ListSelectionModel;
 
 
 public class AlbumFrame extends JFrame{
@@ -17,62 +28,68 @@ public class AlbumFrame extends JFrame{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JPanel frame;
+	private JFrame frame;
 	private JTable table;
-	private final JButton btnAggiungialbum = new JButton("AggiungiAlbum");
+	private JButton btnAggiungialbum;
+	private JScrollPane rightPane;
+	private TableColumn tColumn;
+	private JScrollPane leftPane;
+	private JTable table_1;
 
 
 	public AlbumFrame(Controller main) {
-		InserimentoAlbumFrame frame2 = new InserimentoAlbumFrame(main);
+		InserimentoAlbumFrame frame2 = new InserimentoAlbumFrame(main,this);
+		frame = new JFrame();
+
 		setTitle("Album Data");
-		setBounds(100, 100, 590, 544);
+		setBounds(100, 100, 1200, 788);
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		frame = new JPanel();
 		frame.setForeground(Color.BLACK);
 		frame.setBackground(Color.WHITE);
-		frame.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
-		setContentPane(frame);
-		frame.setLayout(null);
-		
-		JPanel panel = new JPanel();
-		panel.setBounds(10, 11, 1052, 458);
-		frame.add(panel);
-		
-		
-		
-		/*
-		DefaultTableModel tab = new DefaultTableModel(new Object[][] {}, new String[] { 
-				"Tipo Album", "Nome Album", "Artista", "Lv Artista", "Followers", 
-				"Views Tot.", "Data Pubblicazione", "Retribuzione" }) {
-			 
-			private static final long serialVersionUID = 1L;
-			@SuppressWarnings("rawtypes")
-			Class[] columnTypes = new Class[] { String.class, String.class, String.class, String.class,
-					Integer.class, Integer.class, String.class, Double.class};
-
-			public Class<?> getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-		}
-			public boolean isCellEditable(int row, int column)
-		    {
-		      return false;//celle non editabili
-		    }
-		};*/
-		table = new JTable();
 	
-		main.AggiornaTabella(table, "album", "artista", true);
-		System.out.println("aggiornato");
-
+		frame.getContentPane().setLayout(new BoxLayout(frame, BoxLayout.X_AXIS));
+		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
 		
-		panel.add(table);
- 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(1072, 11, 288, 635);
-		frame.add(panel_1);
-		btnAggiungialbum.setBounds(10, 474, 207, 31);
-		frame.add(btnAggiungialbum);
+		
+
+		leftPane = new JScrollPane();
+		leftPane.setBounds(100, 100, 500, 300);
+		getContentPane().add(leftPane);
+		
+		rightPane = new JScrollPane();
+        getContentPane().add(rightPane)
+		
+		;
+		
+		table_1 = new JTable();
+		table_1.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		table_1.setFillsViewportHeight(true);
+		table_1.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "N° Track", "NomeTraccia" }) {
+
+                private static final long serialVersionUID = 1L;
+                @SuppressWarnings("rawtypes")
+                Class[] columnTypes = new Class[] { Integer.class, String.class};
+
+                public Class<?> getColumnClass(int columnIndex) {
+                       return columnTypes[columnIndex];
+                 }
+                  @Override
+                  public boolean isCellEditable(int row, int column) {
+                  //all cells false
+                  return false;
+                  }
+                });
+		table_1.getColumnModel().getColumn(0).setMaxWidth(80);
+		rightPane.setViewportView(table_1);
+		
+		
+		
+		btnAggiungialbum = new JButton("AggiungiAlbum");
+		btnAggiungialbum.setAlignmentX(Component.BOTTOM_ALIGNMENT);
+
+		getContentPane().add(btnAggiungialbum);
 		
 		btnAggiungialbum.addActionListener(new ActionListener() {
 			
@@ -81,19 +98,83 @@ public class AlbumFrame extends JFrame{
 				frame2.setVisible(true);
 			}
 		});
+		
+		
+		
+	    table = new JTable();
+	    table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+	    
+	   table.setFillsViewportHeight(true);
+		table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Tipo", "Nome Album", 
+				                                                               "Artista", "Lv Artista", "Followers", "Views Tot",
+				                                                               "Data Pubblicazione", "Retribuzione Album" }) {
+		
+			private static final long serialVersionUID = 1L;
+			@SuppressWarnings("rawtypes")
+			Class[] columnTypes = new Class[] { String.class, String.class, String.class, String.class,Integer.class, Integer.class, Date.class, Double.class };
+
+			public Class<?> getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+			 @Override
+			    public boolean isCellEditable(int row, int column) {
+			       //all cells false
+			       return false;
+			    }
+		});
+		
+		
+		main.AggiornaTabella(table, "album", "artista", true);
+		
+		System.out.println("aggiornato");
+		table.getColumnModel().getColumn(0).setMaxWidth(50);
+		table.getColumnModel().getColumn(4).setMaxWidth(60);
+		table.getColumnModel().getColumn(5).setMaxWidth(60);
+
+		ColumnRender();
+
+		leftPane.setViewportView(table);
+		
+		
 
 	}
 	
-	public void AggiungiAlbum(ArrayList<Album> list2) {
-		// TODO Auto-generated method stub
-		for(Album a:list2) {
+	//Centra e Colora le singole celle
+		class ColumnColorRenderer extends DefaultTableCellRenderer {
+			   /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+			Color backgroundColor, foregroundColor;
 			
-		DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
-	    if(dtm.getColumnCount()==8) {
-	    dtm.addRow(new Object[] { a.getTipoAlbum(), a.getTipoAlbum(), a.getNomeArtista(),
-	    		a.getFollowers(), a.getViewsTot(), a.getDataPubb(), a.getRetribuzioneAlbum() });
-	    }
-
+			   public ColumnColorRenderer(Color backgroundColor, Color foregroundColor) {
+			      super();
+			      this.backgroundColor = backgroundColor;
+			      this.foregroundColor = foregroundColor;
+			      this.setHorizontalAlignment(SwingConstants.CENTER);
+			      
+			   }
+			}
+		
+		public void ColumnRender() {
+		     for(int i=0; i<8; i++) {
+		         tColumn = table.getColumnModel().getColumn(i);
+		         tColumn.setCellRenderer(new ColumnColorRenderer(Color.white, Color.black));
+		         
+		     
+		    	 }
+		/*
+		     for(int i=0; i<2; i++) {
+		         tColumn2 = table_1.getColumnModel().getColumn(i);
+		         tColumn2.setCellRenderer(new ColumnColorRenderer(Color.white, Color.black));
+		       	}
+*/
 		}
-	}
+		
+		public void RefreshTable(Controller main) {
+			main.AggiornaTabella(table,"album", "artista", true);
+		}
+	
+	
+	
 }

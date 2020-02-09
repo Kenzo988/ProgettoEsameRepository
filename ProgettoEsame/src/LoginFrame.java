@@ -89,7 +89,7 @@ public class LoginFrame extends JFrame {
 	
 
 		  usernameField.setText("postgres");
-        passwordField.setText("password");
+        passwordField.setText("sergio96");
 	}
 
 	
