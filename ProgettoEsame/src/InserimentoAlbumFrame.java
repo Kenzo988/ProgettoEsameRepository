@@ -146,6 +146,8 @@ public class InserimentoAlbumFrame extends JFrame {
 				albumFrame.RefreshTable(ctrl);
 				nomeArtista.setText("");
 			    nomeAlbum.setText("");
+			    rimuoviTraccia();
+			    flag=false;
 			}
 
 			
@@ -232,6 +234,20 @@ public class InserimentoAlbumFrame extends JFrame {
 
 		nomeTraccia.setText("");
 
+	}
+	
+	private void rimuoviTraccia() {
+		DefaultTableModel dtm = (DefaultTableModel) this.table_1.getModel();
+		DefaultTableModel dtm2 = (DefaultTableModel) this.table.getModel();
+
+	   
+	    	
+	    	for(int h=0;h<=dtm.getRowCount();h++) {
+			dtm.removeRow(h);
+			traccia[h]=null;
+	    	}
+	    	
+	    dtm2.removeRow(0);	
 	}
 	
 	
