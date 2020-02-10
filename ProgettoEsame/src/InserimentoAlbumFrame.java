@@ -143,7 +143,7 @@ public class InserimentoAlbumFrame extends JFrame {
 				ctrl.InserisciAlbum(comboBox.getItemAt(comboBox.getSelectedIndex()),
 						            nomeAlbum.getText(),nomeArtista.getText(),
 						            getDate(), traccia );
-				albumFrame.RefreshTable(ctrl);
+				//albumFrame.RefreshTable(ctrl);
 				nomeArtista.setText("");
 			    nomeAlbum.setText("");
 			    rimuoviTraccia();
@@ -242,7 +242,7 @@ public class InserimentoAlbumFrame extends JFrame {
 
 	   
 	    	
-	    	for(int h=0;h<=dtm.getRowCount();h++) {
+	    	for(int h=0;h<dtm.getRowCount();h++) {
 			dtm.removeRow(h);
 			traccia[h]=null;
 	    	}

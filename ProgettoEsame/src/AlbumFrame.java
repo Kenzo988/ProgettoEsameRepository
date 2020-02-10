@@ -1,10 +1,7 @@
 import java.awt.Color;
-import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JTable;
@@ -22,9 +19,7 @@ import java.sql.Date;
 import javax.swing.BoxLayout;
 import java.awt.Component;
 import javax.swing.ListSelectionModel;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -46,7 +41,6 @@ public class AlbumFrame extends JFrame{
 	private JScrollPane leftPane;
 	private JTable table_1;
 	private JLabel lblresultSelezione;
-	private String data;
 
 
 	public AlbumFrame(Controller main) {
@@ -210,7 +204,8 @@ public class AlbumFrame extends JFrame{
 	        }
 	        System.out.println("Selected: " + selectedData+ " "+ selectedData2);
 	        lblresultSelezione.setText(selectedData);
-	        setRightPane(main,selectedData);
+	        setRightPane(main,selectedData,selectedData2);
+	        
 	      }
 
 		
@@ -219,9 +214,9 @@ public class AlbumFrame extends JFrame{
 	}
 
 	
-	private void setRightPane(Controller main,String selectedData) {
+	private void setRightPane(Controller main,String selectedData, String selectedData2) {
 		// TODO Auto-generated method stub
-		main.AggiornaTabella(table_1, "table_"+selectedData, "traccia", true);
+		main.AggiornaTabella(table_1, selectedData+"_"+selectedData2, "n", true);
 	}
 
 	//Centra e Colora le singole celle
@@ -257,6 +252,6 @@ public class AlbumFrame extends JFrame{
 		}
 		
 		public void RefreshTable(Controller main) {
-			main.AggiornaTabella(table,"album", "artista", true);
+			main.AggiornaTabella(table,"", "n", true);
 		}
 }
