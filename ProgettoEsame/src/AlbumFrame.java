@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.util.Vector;
 
 import javax.swing.BoxLayout;
 import java.awt.Component;
@@ -41,6 +42,8 @@ public class AlbumFrame extends JFrame{
 	private JScrollPane leftPane;
 	private JTable table_1;
 	private JLabel lblresultSelezione;
+	private int aColumn;
+	private JLabel lblListaAlbums;
 
 
 	public AlbumFrame(Controller main) {
@@ -69,22 +72,7 @@ public class AlbumFrame extends JFrame{
 		table_1 = new JTable();
 		table_1.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		table_1.setFillsViewportHeight(true);
-		table_1.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "N° Track", "NomeTraccia" }) {
-
-                private static final long serialVersionUID = 1L;
-                @SuppressWarnings("rawtypes")
-                Class[] columnTypes = new Class[] { Integer.class, String.class};
-
-                public Class<?> getColumnClass(int columnIndex) {
-                       return columnTypes[columnIndex];
-                 }
-                  @Override
-                  public boolean isCellEditable(int row, int column) {
-                  //all cells false
-                  return false;
-                  }
-                });
-		table_1.getColumnModel().getColumn(0).setMaxWidth(80);
+	
 		
 		
 		rightPane.setViewportView(table_1);
@@ -108,7 +96,7 @@ public class AlbumFrame extends JFrame{
 	    table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 	    
 	    table.setFillsViewportHeight(true);
-		table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Tipo", "Nome Album", 
+		/*table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Tipo", "Nome Album", 
 				                                                               "Artista", "Lv Artista", "Followers", "Views Tot",
 				                                                               "Data Pubblicazione", "Retribuzione Album" }) {
 		
@@ -124,7 +112,7 @@ public class AlbumFrame extends JFrame{
 			       //all cells false
 			       return false;
 			    }
-		});
+		});*/
 		
 		
 		main.AggiornaTabella(table, "album", "artista", true);
@@ -146,36 +134,47 @@ public class AlbumFrame extends JFrame{
         lblresultSelezione = new JLabel("");
         lblresultSelezione.setHorizontalAlignment(SwingConstants.LEFT);
 		lblresultSelezione.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		lblListaAlbums = new JLabel("Lista Albums");
+		lblListaAlbums.setFont(new Font("Tahoma", Font.BOLD, 14));
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(leftPane, GroupLayout.PREFERRED_SIZE, 815, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(lblListaAlbums, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)
+							.addGap(679))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(leftPane, GroupLayout.PREFERRED_SIZE, 805, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)))
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(rightPane, GroupLayout.PREFERRED_SIZE, 326, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
+							.addComponent(btnAggiungialbum)
+							.addGap(28))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblAlbumSelezionato)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblresultSelezione, GroupLayout.PREFERRED_SIZE, 170, GroupLayout.PREFERRED_SIZE))
-						.addComponent(rightPane, GroupLayout.PREFERRED_SIZE, 326, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
-					.addComponent(btnAggiungialbum)
-					.addGap(28))
+							.addComponent(lblresultSelezione, GroupLayout.PREFERRED_SIZE, 170, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap(155, Short.MAX_VALUE))))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(leftPane, Alignment.LEADING)
-						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(lblAlbumSelezionato)
-								.addComponent(lblresultSelezione, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(btnAggiungialbum, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-								.addComponent(rightPane, GroupLayout.PREFERRED_SIZE, 616, GroupLayout.PREFERRED_SIZE))))
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lblAlbumSelezionato)
+							.addComponent(lblListaAlbums, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblresultSelezione, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(btnAggiungialbum, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+						.addComponent(rightPane, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 616, GroupLayout.PREFERRED_SIZE)
+						.addComponent(leftPane, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 616, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(94, Short.MAX_VALUE))
 		);
 		getContentPane().setLayout(groupLayout);
@@ -204,6 +203,7 @@ public class AlbumFrame extends JFrame{
 	        }
 	        System.out.println("Selected: " + selectedData+ " "+ selectedData2);
 	        lblresultSelezione.setText(selectedData);
+	        lblresultSelezione.setForeground(Color.RED);
 	        setRightPane(main,selectedData,selectedData2);
 	        
 	      }
@@ -217,7 +217,33 @@ public class AlbumFrame extends JFrame{
 	private void setRightPane(Controller main,String selectedData, String selectedData2) {
 		// TODO Auto-generated method stub
 		main.AggiornaTabella(table_1, selectedData+"_"+selectedData2, "n", true);
-	}
+	  /*  DefaultTableModel tableModel = (DefaultTableModel) table_1.getModel();
+		tableModel=(new DefaultTableModel(new Object[][] {}, new String[] { "N° Track", "NomeTraccia" }) {
+
+            private static final long serialVersionUID = 1L;
+            @SuppressWarnings("rawtypes")
+            Class[] columnTypes = new Class[] { Integer.class, String.class};
+
+            public Class<?> getColumnClass(int columnIndex) {
+                   return columnTypes[columnIndex];
+             }
+              @Override
+              public boolean isCellEditable(int row, int column) {
+              //all cells false
+              return false;
+              }
+            });*/
+
+		while(table_1.getColumnCount()!=2) {
+			aColumn=2; 
+				  TableColumn tcol = table_1.getColumnModel().getColumn(aColumn);
+		table_1.removeColumn(tcol);
+			}
+			
+		}
+		
+
+	
 
 	//Centra e Colora le singole celle
 		class ColumnColorRenderer extends DefaultTableCellRenderer {
@@ -252,6 +278,6 @@ public class AlbumFrame extends JFrame{
 		}
 		
 		public void RefreshTable(Controller main) {
-			main.AggiornaTabella(table,"", "n", true);
+			//main.AggiornaTabella(table, "album", "n", true);
 		}
 }
