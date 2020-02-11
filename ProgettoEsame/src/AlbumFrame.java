@@ -8,10 +8,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-
-
 import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -107,12 +104,12 @@ public class AlbumFrame extends JFrame{
 		
 		
 		System.out.println("aggiornato");
-		/*table.getColumnModel().getColumn(0).setMaxWidth(50);
-		table.getColumnModel().getColumn(4).setMaxWidth(60);
-		table.getColumnModel().getColumn(5).setMaxWidth(60);
-*/
+		
+		
+
 		ColumnRender();
 		TableEvents(main); 
+        setFalse();
 		
 
 		leftPane.setViewportView(table);
@@ -208,7 +205,7 @@ public class AlbumFrame extends JFrame{
 	          for (int j = 0; j < selectedColumns.length; j++) {
 	            selectedData = (String) table.getValueAt(selectedRow[i], 1);
 	            selectedData2 = (String) table.getValueAt(selectedRow[i], 2);
-		        rowRender(selectedRow[i]);
+                 rowRender(selectedRow[i]);
 
 	          }
 	        }
@@ -217,6 +214,7 @@ public class AlbumFrame extends JFrame{
 	        lblresultSelezione.setText(selectedData);
 	        lblresultSelezione.setForeground(Color.RED);
 	        setRightPane(main,selectedData,selectedData2);
+
 	        }
 	      }
 
@@ -235,6 +233,8 @@ public class AlbumFrame extends JFrame{
 			aColumn=2; 
 				  TableColumn tcol = table_1.getColumnModel().getColumn(aColumn);
 		table_1.removeColumn(tcol);
+		table_1.getColumnModel().getColumn(0).setMaxWidth(60);
+
 			}
 		
 		}
@@ -266,50 +266,81 @@ public class AlbumFrame extends JFrame{
 			      this.setHorizontalAlignment(SwingConstants.CENTER);
 			      
 			   }
+			   public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,   boolean hasFocus, int row, int column) {
+				      Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+				      
+				          
+				    	  cell.setBackground(backgroundColor);
+					     
+				      
+				      return cell;
+				      }
 			}
 		
 		public void ColumnRender() {
 		     for(int i=0; i<7; i++) {
 		         tColumn = table.getColumnModel().getColumn(i);
 		         tColumn.setCellRenderer(new ColumnColorRenderer(Color.white, Color.black));
-		         
+		     }
 		     
 		    	 }
-		/*
-		     for(int i=0; i<2; i++) {
-		         tColumn2 = table_1.getColumnModel().getColumn(i);
-		         tColumn2.setCellRenderer(new ColumnColorRenderer(Color.white, Color.black));
-		       	}
-*/
-		}
-		
-		public class RowRenderN implements TableCellRenderer {
-			 
-		    public final DefaultTableCellRenderer DEFAULT_RENDERER = new DefaultTableCellRenderer();
-		 
-		    public Component getTableCellRendererComponent(JTable table, Object value,
-		            boolean isSelected, boolean hasFocus, int row, int column) {
-
-                   Component c = DEFAULT_RENDERER.getTableCellRendererComponent(table,
-		                value, isSelected, hasFocus, row, column);
-                   c.setBackground(Color.BLUE);
-                   return c;
-		    }
-		    }
-		    
+		   //Centra e Colora le singole celle (row)
+				class RowColorRenderer extends DefaultTableCellRenderer {
+				
+					/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+					Color backgroundColor, foregroundColor;
+					int n;
+					
+					   public RowColorRenderer(Color backgroundColor, Color foregroundColor,int n) {
+					      super();
+					      this.backgroundColor = backgroundColor;
+					      this.foregroundColor = foregroundColor;
+					      this.n=n;
+					      this.setHorizontalAlignment(SwingConstants.CENTER);
+					      
+					   }
+		           public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,   boolean hasFocus, int row, int column) {
+	    		   Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+						      
+						          if(row==n)
+						    	  cell.setBackground(backgroundColor);
+						          else cell.setBackground(Color.white);
+							     
+						      
+						      return cell;
+						      
+				
+		           }}
+				
+				
 		private void rowRender(int selectedRow) {
 			
-			
-			RowRenderN colorRenderer = new RowRenderN();
-	        table.setDefaultRenderer(Object.class, colorRenderer);
-			table.revalidate();
-
+			for(int z=0; z<table.getColumnCount();z++) {
+				
+			         tColumn = table.getColumnModel().getColumn(z);
+			         tColumn.setCellRenderer(new RowColorRenderer(Color.lightGray, Color.black,selectedRow));
+			         
+			     
+			    	 
+			}
 		}
+		
 
 		
 		public void RefreshTable(Controller main) {
 			main.AggiornaTabella(table, "album", "artista", true);
 			ColumnRender();
+			
+
+
+		}
+		
+		public void setFalse() {
+			table.setDefaultEditor(Object.class, null);
+			table_1.setDefaultEditor(Object.class, null);
 
 		}
 		
