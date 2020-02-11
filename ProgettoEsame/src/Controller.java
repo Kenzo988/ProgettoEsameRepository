@@ -14,15 +14,10 @@ public class Controller
 	public static void main(String[] args) 
 	{
 		Controller _mycontroller = new Controller();
-		//--------------------------------------
-		_mycontroller.Login();
-		//---------------------------------------
-		
-		//System.out.println("numero righe "+_mycontroller.NumeroRighe("album_table"));
-		//System.out.println("numero colonne "+_mycontroller.NumeroColonne("album_table"));
-		
-		Bho bho = new Bho(_mycontroller);
-		bho.frame.setVisible(true);
+
+		//login frame
+		LoginFrame login_frame = new LoginFrame(_mycontroller);
+		login_frame.setVisible(true);
 	}
 	
 	public Controller() 
@@ -32,9 +27,15 @@ public class Controller
 	
 	/**effettua il login al database con un nome utente e password
 	*/
-	public void Login() 
+	public boolean Login(String utente, String password) 
 	{
-		do 
+		con = _myconnessione.CreaConnessione(utente, password, con);
+		if(con != null)
+			return true;
+		else
+			return false;
+		
+		/*do 
 		{
 			//recupero credenziali
 			String utente, password;
@@ -51,7 +52,13 @@ public class Controller
 			con = _myconnessione.CreaConnessione(utente, password, con);
 			scanner.close();
 		}
-		while(con == null);
+		while(con == null);*/
+	}
+	
+	public void OpenAlbumFrame(Controller _mycontroller)
+	{
+		AlbumFrame album_frame = new AlbumFrame(_mycontroller);
+		album_frame.setVisible(true);
 	}
 	
 	/**

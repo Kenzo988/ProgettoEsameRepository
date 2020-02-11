@@ -100,7 +100,7 @@ public class LoginFrame extends JFrame {
 			flag=ctrl.Login(usernameField.getText(),passwordField.getText());
 		
 		if(flag==true)
-		ctrl.openAlbumFrame();
+		ctrl.OpenAlbumFrame(ctrl);
 	    } else {
 	    	JOptionPane.showMessageDialog(new JFrame(), "Inserire Dati Login", "Errore Inserimento",
 					JOptionPane.ERROR_MESSAGE);
