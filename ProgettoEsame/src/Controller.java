@@ -6,7 +6,7 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.Connection;
 import java.sql.Date;
 
-public class Controller implements DBDAO
+public class Controller
 {
 	private static Connection con = null;
 	private ConnessioneDB _myconnessione;
