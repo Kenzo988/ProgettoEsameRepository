@@ -7,6 +7,7 @@ import java.sql.Date;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import java.awt.Font;
 import javax.swing.JButton;
@@ -106,15 +107,13 @@ public class InserimentoAlbumFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(flag==false)
-			    
-
+				DefaultTableModel dtm = (DefaultTableModel) table.getModel();
+		        if(dtm.getRowCount()>0)
+		        dtm.removeRow(0);
 				AggiungiAlbum();
 				
-			}
-
-			
-		});
+					
+			}});
 		
 		JButton btnSalvaTraccia = new JButton("Salva Traccia");
 		btnSalvaTraccia.setBounds(449, 140, 107, 21);
@@ -126,7 +125,7 @@ public class InserimentoAlbumFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			    
 				aggiungiTraccia();
-			}
+			}	
 
 		});
 		
@@ -140,6 +139,12 @@ public class InserimentoAlbumFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				organizzaDati();
+				
+				if(comboBox.getItemAt(comboBox.getSelectedIndex()).length() >0 && 
+						              nomeAlbum.getText().length() >0 && 
+						              nomeArtista.getText().length() >0
+						              && table_1.getRowCount()>0) {
+					
 				ctrl.InserisciAlbum(comboBox.getItemAt(comboBox.getSelectedIndex()),
 						            nomeAlbum.getText(),nomeArtista.getText(),
 						            getDate(), traccia );
@@ -148,6 +153,13 @@ public class InserimentoAlbumFrame extends JFrame {
 			    nomeAlbum.setText("");
 			    rimuoviTraccia();
 			    flag=false;
+			    nomeAlbum.setText("");
+				nomeArtista.setText("");
+				}else {
+					JOptionPane.showMessageDialog(new JFrame(),
+				    "Reinserire valori", "Errore Inserimento",JOptionPane.ERROR_MESSAGE);
+					rimuoviTraccia();
+				}
 			}
 
 			
@@ -208,13 +220,16 @@ public class InserimentoAlbumFrame extends JFrame {
        
         
         DefaultTableModel dtm = (DefaultTableModel) this.table.getModel();
+        /* if(dtm.getRowCount()>0)
+        dtm.removeRow(0);*/
 	    if(dtm.getColumnCount()==4) {
 	    dtm.addRow(new Object[] { comboBox.getItemAt(comboBox.getSelectedIndex()),
 	    		                  nomeAlbum.getText(), nomeArtista.getText(), 
 	    		                  getDate()});
 	    }
+	    
 	    System.out.println("album aggiunto: "+nomeAlbum.getText());
-        flag=true;
+        
 	}
 
 	private Date getDate() {
@@ -241,13 +256,11 @@ public class InserimentoAlbumFrame extends JFrame {
 		DefaultTableModel dtm2 = (DefaultTableModel) this.table.getModel();
 
 	   
-		int h=0;
 	    	while(dtm.getRowCount()!=0) {
 			dtm.removeRow(0);
-			traccia[h]=null;
-			h++;
 	    	}
-	    	
+			traccia=null;
+        if(dtm2.getRowCount()>0)
 	    dtm2.removeRow(0);	
 	    table.revalidate();
 

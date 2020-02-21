@@ -304,7 +304,7 @@ public class AlbumFrame extends JFrame{
 	
 	private void setRightPane(Controller main,String selectedData, String selectedData2) {
 		main.AggiornaTabella(table_1, selectedData+"_"+selectedData2, "n", true);
-	    ColumnRender();
+	    ColumnRender2();
 
 		while(table_1.getColumnCount()!=2) {
 		      
@@ -317,6 +317,10 @@ public class AlbumFrame extends JFrame{
 		
 		}
 	
+	
+
+
+
 	private void RimuoviRow() {
 		DefaultTableModel dtm = (DefaultTableModel) this.table_1.getModel();
 		while(dtm.getRowCount()!=0) {
@@ -355,18 +359,20 @@ public class AlbumFrame extends JFrame{
 				      }
 			}
 		
-		public void ColumnRender() {
-			if(table_1.getColumnCount()>1) {
-		     for(int i=0; i<table_1.getColumnCount(); i++) {
+		private void ColumnRender2() {
+			for(int i=0; i<table_1.getColumnCount(); i++) {
 		         tColumn = table_1.getColumnModel().getColumn(i);
-		         tColumn.setCellRenderer(new ColumnColorRenderer(Color.white, Color.black));
-		     }
-		     }else {
+		         tColumn.setCellRenderer(new ColumnColorRenderer(Color.white, Color.black));			
+		}
+			}
+		
+		public void ColumnRender() {
+			
 		    	 for(int i=0; i<table.getColumnCount(); i++) {
 			         tColumn = table.getColumnModel().getColumn(i);
 			         tColumn.setCellRenderer(new ColumnColorRenderer(Color.white, Color.black));
 		    	 
-		     }
+		     
 		     
 		    	 }
 			}
@@ -439,8 +445,9 @@ public class AlbumFrame extends JFrame{
 				if(dialogResult == JOptionPane.YES_OPTION){
 				
 				main.EliminaAlbum(selectedData, selectedData2);
-				RefreshTable(main);
 				RimuoviRow();
+
+				RefreshTable(main);
 				}
 			}
 			
