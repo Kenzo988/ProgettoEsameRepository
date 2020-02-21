@@ -9,6 +9,9 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
+import com.sun.javafx.scene.control.SelectedCellsMap;
+
 import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,6 +28,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import javax.swing.JComboBox;
 
 
 public class AlbumFrame extends JFrame{
@@ -38,6 +42,8 @@ public class AlbumFrame extends JFrame{
 	private JButton btnAggiungialbum;
 	private JScrollPane rightPane;
 	private TableColumn tColumn;
+	private TableColumn tColumn2;
+
 	private JScrollPane leftPane;
 	private JTable table_1;
 	private JLabel lblresultSelezione;
@@ -45,6 +51,10 @@ public class AlbumFrame extends JFrame{
 	private JLabel lblListaAlbums;
     private String selectedData;
     private String selectedData2;
+    private String selectedData3;
+
+	private String[] ListaOrdine= {"Tipo album", "Nome album", "Nome artista", "Followers", "Views totali", "Data pubblicazione", "Retribuzione"};
+	private JComboBox <String> comboBox;
 
 
 
@@ -72,7 +82,6 @@ public class AlbumFrame extends JFrame{
 
 		
 		table_1 = new JTable();
-		table_1.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		table_1.setFillsViewportHeight(true);
 	
 		
@@ -108,7 +117,8 @@ public class AlbumFrame extends JFrame{
 		
 
 		ColumnRender();
-		TableEvents(main); 
+		TableEvents(main);
+		tableEventsRight();
         setFalse();
 		
 
@@ -121,7 +131,7 @@ public class AlbumFrame extends JFrame{
         lblresultSelezione.setHorizontalAlignment(SwingConstants.LEFT);
 		lblresultSelezione.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
-		lblListaAlbums = new JLabel("Lista Albums");
+		lblListaAlbums = new JLabel("Lista Albums:");
 		lblListaAlbums.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
 		JButton btnEliminaAlbum = new JButton("Elimina Album");
@@ -138,6 +148,31 @@ public class AlbumFrame extends JFrame{
 		
 		
 		btnEliminaAlbum.setAlignmentX(1.0f);
+		
+		JButton btnEliminaTracce = new JButton("Elimina Traccia");
+		btnEliminaTracce.setAlignmentX(1.0f);
+		
+		btnEliminaTracce.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				eliminaTrackSelezionata(selectedData3,main);				
+			}
+
+		});
+		
+		JLabel lblOrdinaAlbums = new JLabel("Ordina Albums per:");
+		lblOrdinaAlbums.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		
+		comboBox = new JComboBox<String>();
+		for(String a:ListaOrdine) {
+			comboBox.addItem(a);
+			}
+		comboBox.setBounds(99, 33, 98, 20);
+		getContentPane().add(comboBox);
+		
+		
+		
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -146,47 +181,57 @@ public class AlbumFrame extends JFrame{
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblListaAlbums, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)
-							.addGap(679))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(leftPane, GroupLayout.PREFERRED_SIZE, 805, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)))
+							.addPreferredGap(ComponentPlacement.RELATED, 363, Short.MAX_VALUE)
+							.addComponent(lblOrdinaAlbums)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 212, GroupLayout.PREFERRED_SIZE))
+						.addComponent(leftPane, GroupLayout.PREFERRED_SIZE, 834, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-							.addComponent(rightPane, GroupLayout.PREFERRED_SIZE, 399, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(btnAggiungialbum, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(btnEliminaAlbum, GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)))
 						.addGroup(groupLayout.createSequentialGroup()
+							.addGap(8)
 							.addComponent(lblAlbumSelezionato)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblresultSelezione, GroupLayout.PREFERRED_SIZE, 170, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap())
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(lblresultSelezione, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addComponent(rightPane, GroupLayout.PREFERRED_SIZE, 323, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnEliminaTracce, GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+						.addComponent(btnEliminaAlbum, GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+						.addComponent(btnAggiungialbum, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(64))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(lblresultSelezione, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-							.addComponent(lblAlbumSelezionato)
-							.addComponent(lblListaAlbums, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE))
-						.addComponent(lblresultSelezione, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE))
+							.addComponent(comboBox)
+							.addComponent(lblOrdinaAlbums, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblListaAlbums, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblAlbumSelezionato)))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(btnAggiungialbum, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnEliminaAlbum, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnEliminaAlbum, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnEliminaTracce, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE))
 						.addComponent(leftPane, GroupLayout.PREFERRED_SIZE, 616, GroupLayout.PREFERRED_SIZE)
 						.addComponent(rightPane, GroupLayout.PREFERRED_SIZE, 616, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(94, Short.MAX_VALUE))
+					.addContainerGap(91, Short.MAX_VALUE))
 		);
 		getContentPane().setLayout(groupLayout);
 		
 		
 
 	}
+	
+	
 	
 	private void TableEvents(Controller main) {
 		ListSelectionModel cellSelectionModel = table.getSelectionModel();
@@ -223,19 +268,52 @@ public class AlbumFrame extends JFrame{
 	    });
 		
 	}
+	
+	
+	private void tableEventsRight() {
+		ListSelectionModel cellSelectionModel = table_1.getSelectionModel();
+	    cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
+	    cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+
+		public void valueChanged(ListSelectionEvent e) {
+	         selectedData3 = null;
+	         
+
+	        int[] selectedRow = table_1.getSelectedRows();
+	        int[] selectedColumns = table_1.getSelectedColumns();
+
+	        for (int i = 0; i < selectedRow.length; i++) {
+	          for (int j = 0; j < selectedColumns.length; j++) {
+	            selectedData3 = (String) table_1.getValueAt(selectedRow[i], 0);
+	            rowRenderRight(selectedRow[i]);
+
+	          }}
+		System.out.println("track n: "+selectedData3);}
+		});
+	}
+     
+	private void rowRenderRight(int selectedRow) {
+		
+		for(int z=0; z<table_1.getColumnCount();z++) {
+			
+		   tColumn2 = table_1.getColumnModel().getColumn(z);
+		   tColumn2.setCellRenderer(new RowColorRenderer(Color.lightGray, Color.black,selectedRow));  	 
+		}
+	}
 	
 	private void setRightPane(Controller main,String selectedData, String selectedData2) {
 		main.AggiornaTabella(table_1, selectedData+"_"+selectedData2, "n", true);
-	  
+	    ColumnRender();
 
 		while(table_1.getColumnCount()!=2) {
+		      
 			aColumn=2; 
-				  TableColumn tcol = table_1.getColumnModel().getColumn(aColumn);
-		table_1.removeColumn(tcol);
-		table_1.getColumnModel().getColumn(0).setMaxWidth(60);
-
-			}
+		    TableColumn tcol = table_1.getColumnModel().getColumn(aColumn);
+		    table_1.removeColumn(tcol);
+            table_1.getColumnModel().getColumn(0).setMaxWidth(20);
+          }
+		
 		
 		}
 	
@@ -278,12 +356,20 @@ public class AlbumFrame extends JFrame{
 			}
 		
 		public void ColumnRender() {
-		     for(int i=0; i<7; i++) {
-		         tColumn = table.getColumnModel().getColumn(i);
+			if(table_1.getColumnCount()>1) {
+		     for(int i=0; i<table_1.getColumnCount(); i++) {
+		         tColumn = table_1.getColumnModel().getColumn(i);
 		         tColumn.setCellRenderer(new ColumnColorRenderer(Color.white, Color.black));
+		     }
+		     }else {
+		    	 for(int i=0; i<table.getColumnCount(); i++) {
+			         tColumn = table.getColumnModel().getColumn(i);
+			         tColumn.setCellRenderer(new ColumnColorRenderer(Color.white, Color.black));
+		    	 
 		     }
 		     
 		    	 }
+			}
 		   //Centra e Colora le singole celle (row)
 				class RowColorRenderer extends DefaultTableCellRenderer {
 				
@@ -313,7 +399,8 @@ public class AlbumFrame extends JFrame{
 						      return cell;
 						      
 				
-		           }}
+		           }
+				}
 				
 				
 		private void rowRender(int selectedRow) {
@@ -356,6 +443,22 @@ public class AlbumFrame extends JFrame{
 				RimuoviRow();
 				}
 			}
+			
+		}
+		
+
+		private void eliminaTrackSelezionata(String n_track,Controller main) {
+			if(n_track!=null) {
+			int n=Integer.parseInt(n_track);
+			int dialogButton = 0;
+			int dialogResult = JOptionPane.showConfirmDialog (null, "Vuoi Davvero Eliminare La traccia selezionata?",
+					                                          "Warning",dialogButton);
+			if(dialogResult == JOptionPane.YES_OPTION){
+			
+			main.EliminaTraccia(n, selectedData, selectedData2);
+			setRightPane(main, selectedData, selectedData2);
+			}
+			}				
 			
 		}
 }
