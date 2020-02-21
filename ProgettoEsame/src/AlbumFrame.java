@@ -156,6 +156,7 @@ public class AlbumFrame extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(selectedData3!=null)
 				eliminaTrackSelezionata(selectedData3,main);				
 			}
 
@@ -171,6 +172,15 @@ public class AlbumFrame extends JFrame{
 		comboBox.setBounds(99, 33, 98, 20);
 		getContentPane().add(comboBox);
 		
+		
+		comboBox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				OrdineComboBox(main);
+				
+			}
+		});
 		
 		
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
@@ -233,6 +243,26 @@ public class AlbumFrame extends JFrame{
 	
 	
 	
+	private void OrdineComboBox(Controller main) {
+		String tmp=comboBox.getItemAt(comboBox.getSelectedIndex());
+		if(tmp=="Tipo album")
+		main.AggiornaTabella(table, "album", "tipo", true);
+		if(tmp=="Nome album")
+			main.AggiornaTabella(table, "album", "nome_album", true);
+		if(tmp=="Nome artista")
+			main.AggiornaTabella(table, "album", "artista", true);
+		if(tmp=="Followers")
+			main.AggiornaTabella(table, "album", "followers", true);
+		if(tmp=="Views totali")
+			main.AggiornaTabella(table, "album", "views_totali", true);
+		if(tmp=="Data pubblicazione")
+			main.AggiornaTabella(table, "album", "data_pubblicazione", true);
+		if(tmp=="Retribuzione")
+			main.AggiornaTabella(table, "album", "retribuzione", true);
+	}
+
+
+
 	private void TableEvents(Controller main) {
 		ListSelectionModel cellSelectionModel = table.getSelectionModel();
 	    cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
