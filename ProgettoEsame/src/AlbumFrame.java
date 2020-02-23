@@ -390,13 +390,20 @@ public class AlbumFrame extends JFrame{
 		main.AggiornaTabella(table_1, selectedData+"_"+selectedData2, "n", true);
 	    ColumnRender2();
 
-		while(table_1.getColumnCount()!=2) {
-		      
+		while(table_1.getColumnCount()!=3 ){
+		    
 			aColumn=2; 
 		    TableColumn tcol = table_1.getColumnModel().getColumn(aColumn);
+		    if(table.getColumnName(4)!="views_totali") {
+		    	System.out.println("tcol "+table.getColumnName(4));
 		    table_1.removeColumn(tcol);
+		    }
+		    if(table_1.getColumnCount()!=3) {
+		    tcol = table_1.getColumnModel().getColumn(4);
+		    table_1.removeColumn(tcol);
+		    }
             table_1.getColumnModel().getColumn(0).setMaxWidth(20);
-          }
+        }
 		
 		
 		}
