@@ -29,6 +29,7 @@ import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 
 
 public class AlbumFrame extends JFrame{
@@ -55,6 +56,7 @@ public class AlbumFrame extends JFrame{
 
 	private String[] ListaOrdine= {"Tipo album", "Nome album", "Nome artista", "Followers", "Views totali", "Data pubblicazione", "Retribuzione"};
 	private JComboBox <String> comboBox;
+	private JButton btnModificaTraccia;
 
 
 
@@ -182,6 +184,33 @@ public class AlbumFrame extends JFrame{
 			}
 		});
 		
+		JButton btnEliminaTutteLe = new JButton("Elimina Tutte le tracce");
+		btnEliminaTutteLe.setAlignmentX(1.0f);
+		
+		btnEliminaTutteLe.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				EliminaTutteLeTracce(main);
+				
+			}
+
+			
+		});
+		
+		btnModificaTraccia = new JButton("Modifica traccia");
+		btnModificaTraccia.setAlignmentX(1.0f);
+		
+        btnModificaTraccia.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+               modificaTraccia(main);				
+			}
+
+			
+		});
+		
 		
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
@@ -202,15 +231,16 @@ public class AlbumFrame extends JFrame{
 							.addGap(8)
 							.addComponent(lblAlbumSelezionato)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(lblresultSelezione, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addComponent(lblresultSelezione, GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE))
 						.addComponent(rightPane, GroupLayout.PREFERRED_SIZE, 323, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnEliminaTracce, GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-						.addComponent(btnEliminaAlbum, GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-						.addComponent(btnAggiungialbum, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGap(64))
+						.addComponent(btnAggiungialbum, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnModificaTraccia, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnEliminaTracce, GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
+						.addComponent(btnEliminaAlbum, GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
+						.addComponent(btnEliminaTutteLe, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -219,7 +249,7 @@ public class AlbumFrame extends JFrame{
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
 						.addComponent(lblresultSelezione, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-							.addComponent(comboBox)
+							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addComponent(lblOrdinaAlbums, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
 							.addComponent(lblListaAlbums, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
 							.addComponent(lblAlbumSelezionato)))
@@ -227,10 +257,14 @@ public class AlbumFrame extends JFrame{
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(btnAggiungialbum, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+							.addGap(29)
+							.addComponent(btnModificaTraccia, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnEliminaAlbum, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnEliminaTracce, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE))
+							.addComponent(btnEliminaTracce, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnEliminaTutteLe, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE))
 						.addComponent(leftPane, GroupLayout.PREFERRED_SIZE, 616, GroupLayout.PREFERRED_SIZE)
 						.addComponent(rightPane, GroupLayout.PREFERRED_SIZE, 616, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(91, Short.MAX_VALUE))
@@ -498,6 +532,40 @@ public class AlbumFrame extends JFrame{
 			}				
 			
 		}
+		
+		private void EliminaTutteLeTracce(Controller main) {
+			if(selectedData!=null && selectedData2!=null) {
+				int i=0;
+				while(i<=table_1.getRowCount()) {
+				main.EliminaTraccia(0, selectedData, selectedData2);
+				System.out.println("row count "+ table_1.getRowCount());
+
+				i++;
+				System.out.println("elimino tracks");
+				}
+				setRightPane(main, selectedData, selectedData2);
+				ColumnRender2();
+				table_1.revalidate();
+			}
+			
+		}
+		
+		private void modificaTraccia(Controller main) {
+			if(selectedData3!=null) {
+			int tmp= Integer.parseInt(selectedData3);
+			
+			
+			 JFrame frame = new JFrame();
+			    String message = "Inserisci nuovo nome per la traccia: "+table.getValueAt(tmp, 1);
+			    String new_name = JOptionPane.showInputDialog(frame, message);
+			    if (new_name == null) {
+			      // User clicked cancel
+			    }else
+			main.ModificaTraccia(tmp, new_name, selectedData);
+			}
+		}
+
+		
 }
 
 		

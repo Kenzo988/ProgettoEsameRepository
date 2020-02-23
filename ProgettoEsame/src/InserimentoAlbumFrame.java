@@ -262,6 +262,7 @@ public class InserimentoAlbumFrame extends JFrame {
 			traccia=null;
         if(dtm2.getRowCount()>0)
 	    dtm2.removeRow(0);	
+        i=0;
 	    table.revalidate();
 
 
