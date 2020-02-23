@@ -27,8 +27,9 @@ public class InserimentoAlbumFrame extends JFrame {
 	private JTextField nomeTraccia;
 	private JTable table;
 	private JTextField nomeAlbum;
-    private String[] tipoAlbum = { "EP" , "Album"};
+    private String[] tipoAlbum = { "ep" , "album"};
     private JComboBox<String> comboBox;
+	@SuppressWarnings("unused")
 	private boolean flag=false;
 	private int i=0;
 	private JTable table_1;

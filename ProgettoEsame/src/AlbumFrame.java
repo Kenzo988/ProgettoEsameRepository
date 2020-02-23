@@ -10,6 +10,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+
+
 import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,7 +29,6 @@ import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 
 
 public class AlbumFrame extends JFrame{
@@ -55,6 +56,7 @@ public class AlbumFrame extends JFrame{
 	private String[] ListaOrdine= {"Tipo album", "Nome album", "Nome artista", "Followers", "Views totali", "Data pubblicazione", "Retribuzione"};
 	private JComboBox <String> comboBox;
 	private JButton btnModificaTraccia;
+	private JButton btnAggiungiTraccia;
 
 
 
@@ -90,7 +92,7 @@ public class AlbumFrame extends JFrame{
 		
 		
 		
-		btnAggiungialbum = new JButton("AggiungiAlbum");
+		btnAggiungialbum = new JButton("Aggiungi Album");
 		btnAggiungialbum.setAlignmentX(Component.BOTTOM_ALIGNMENT);
 		
 		btnAggiungialbum.addActionListener(new ActionListener() {
@@ -209,6 +211,20 @@ public class AlbumFrame extends JFrame{
 			
 		});
 		
+		btnAggiungiTraccia = new JButton("Aggiungi Traccia");
+		btnAggiungiTraccia.setAlignmentX(1.0f);
+		
+		btnAggiungiTraccia.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				aggiungiTraccia(main);
+				
+			}
+
+			
+		});
+		
 		
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
@@ -216,13 +232,14 @@ public class AlbumFrame extends JFrame{
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(leftPane, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 834, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblListaAlbums, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED, 363, Short.MAX_VALUE)
 							.addComponent(lblOrdinaAlbums)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 212, GroupLayout.PREFERRED_SIZE))
-						.addComponent(leftPane, GroupLayout.PREFERRED_SIZE, 834, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)
+							.addGap(4)))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
@@ -237,7 +254,8 @@ public class AlbumFrame extends JFrame{
 						.addComponent(btnModificaTraccia, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnEliminaTracce, GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
 						.addComponent(btnEliminaAlbum, GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
-						.addComponent(btnEliminaTutteLe, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))
+						.addComponent(btnEliminaTutteLe, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnAggiungiTraccia, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -247,15 +265,17 @@ public class AlbumFrame extends JFrame{
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
 						.addComponent(lblresultSelezione, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addComponent(lblOrdinaAlbums, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblAlbumSelezionato)
 							.addComponent(lblListaAlbums, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblAlbumSelezionato)))
+							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(btnAggiungialbum, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-							.addGap(29)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnAggiungiTraccia, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+							.addGap(46)
 							.addComponent(btnModificaTraccia, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnEliminaAlbum, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
@@ -291,6 +311,8 @@ public class AlbumFrame extends JFrame{
 			main.AggiornaTabella(table, "album", "data_pubblicazione", true);
 		if(tmp=="Retribuzione")
 			main.AggiornaTabella(table, "album", "retribuzione", true);
+		
+		ColumnRender();
 	}
 
 
@@ -550,19 +572,38 @@ public class AlbumFrame extends JFrame{
 		
 		private void modificaTraccia(Controller main) {
 			if(selectedData3!=null) {
-			int tmp= Integer.parseInt(selectedData3);
+			int row= Integer.parseInt(selectedData3);
 			
 			
 			 JFrame frame = new JFrame();
-			    String message = "Inserisci nuovo nome per la traccia: "+table.getValueAt(tmp, 1);
+			    String message = "Inserisci nuovo nome per la traccia: "+table_1.getValueAt(row-1, 1);
 			    String new_name = JOptionPane.showInputDialog(frame, message);
 			    if (new_name == null) {
 			      // User clicked cancel
-			    }else
-			main.ModificaTraccia(tmp, new_name, selectedData, "kenzo");
+			    }else {
+			main.ModificaTraccia(row, new_name, selectedData, selectedData2);
+			setRightPane(main, selectedData, selectedData2);
+			    }
 			}
 		}
 
+		
+		private void aggiungiTraccia(Controller main) {
+			if(selectedData!=null && selectedData2!=null) {
+			
+				 JFrame frame = new JFrame();
+				    String message = "Inserisci una nuova traccia:";
+				    String new_name = JOptionPane.showInputDialog(frame, message);
+				    if (new_name == null) {
+				      // User clicked cancel
+				    }else {
+						main.InserisciTraccia(new_name, selectedData, selectedData2);
+         				setRightPane(main, selectedData, selectedData2);
+				    }
+
+				}
+			
+		}
 		
 }
 
