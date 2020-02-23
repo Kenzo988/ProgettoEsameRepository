@@ -208,7 +208,7 @@ public class ConnessioneDB
 				try
 				{
 					//creazione tabella
-					String query = "CREATE TABLE " + nome_table + " (n integer unique, traccia text , album text, artista text, views_traccia integer)";
+					String query = "CREATE TABLE " + nome_table + " (n integer unique primary key, traccia text , album text, artista text, views_traccia integer)";
 					s = con.prepareStatement(query);
 					s.executeUpdate();
 					// aggiunta fk
