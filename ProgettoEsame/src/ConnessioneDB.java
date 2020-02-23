@@ -316,11 +316,11 @@ public class ConnessioneDB
 		}
 	}
 	
-	public void ModificaTracciaDB(int n_traccia, String nome_traccia, String nome_album, Connection con) //per modificare una traccia
+	public void ModificaTracciaDB(int n_traccia, String nome_traccia, String nome_album, String nome_artista, Connection con) //per modificare una traccia
 	{
 		try
 		{
-			String nome_table = "table_" + nome_album;
+			String nome_table = "table_" + nome_album + "_" + nome_artista;
 			String query = "UPDATE " + nome_table + String.format(" SET traccia = ?") + " WHERE n = " + n_traccia;
 			PreparedStatement s = con.prepareStatement(query);
 			s.setString(1, nome_traccia);

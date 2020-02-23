@@ -129,9 +129,9 @@ public class Controller
 	
 	/** modifica il nome di una traccia
 	*/
-	public void ModificaTraccia(int n_traccia, String nome_traccia, String nome_album)
+	public void ModificaTraccia(int n_traccia, String nome_traccia, String nome_album, String nome_artista)
 	{
-		_myconnessione.ModificaTracciaDB(n_traccia, nome_traccia, nome_album, con);
+		_myconnessione.ModificaTracciaDB(n_traccia, nome_traccia, nome_album, nome_artista, con);
 	}
 	
 	/** inserisce un nuovo artista

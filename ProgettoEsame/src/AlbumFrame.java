@@ -10,8 +10,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import com.sun.javafx.scene.control.SelectedCellsMap;
-
 import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -561,7 +559,7 @@ public class AlbumFrame extends JFrame{
 			    if (new_name == null) {
 			      // User clicked cancel
 			    }else
-			main.ModificaTraccia(tmp, new_name, selectedData);
+			main.ModificaTraccia(tmp, new_name, selectedData, "kenzo");
 			}
 		}
 
