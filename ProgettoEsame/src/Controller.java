@@ -92,8 +92,9 @@ public class Controller
 			((DefaultTableModel) table.getModel()).addRow(risultati[i]);
 		}
 	}
-	
-	Object[][] Lettura(String nome_tabella, String nome_colonna_ordine, boolean crescente)//array con i risultati del db 
+	/** restituscie un array object con i risultati della lettura dalla tabella
+	*/
+	public Object[][] Lettura(String nome_tabella, String nome_colonna_ordine, boolean crescente)//array con i risultati del db 
 	{
 		return _myconnessione.LetturaDB(nome_tabella, nome_colonna_ordine, crescente, con);
 	}

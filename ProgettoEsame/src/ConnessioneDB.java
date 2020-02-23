@@ -9,10 +9,10 @@ public class ConnessioneDB
 	{
 
 		//utente default
-		if(utente.equals(""))
+		/*if(utente.equals(""))
 			utente = "postgres";
 		if(password.equals(""))
-			password = "password";
+			password = "password";*/
 		
 		try
 		{
@@ -208,7 +208,7 @@ public class ConnessioneDB
 				try
 				{
 					//creazione tabella
-					String query = "CREATE TABLE " + nome_table + " (n integer unique, traccia text , album text, artista text, views_traccia integer, retribuzione numeric)";
+					String query = "CREATE TABLE " + nome_table + " (n integer unique, traccia text , album text, artista text, views_traccia integer)";
 					s = con.prepareStatement(query);
 					s.executeUpdate();
 					// aggiunta fk
@@ -238,7 +238,7 @@ public class ConnessioneDB
 				rs= s.executeQuery();
 				if(!rs.next()) 
 				{
-					query = "INSERT INTO " + nome_table + String.format(" VALUES (?, ?, ?, ?, 0, 0)");
+					query = "INSERT INTO " + nome_table + String.format(" VALUES (?, ?, ?, ?, 0)");
 					// + "SELECT FROM " + nome_table + " WHERE traccia <> " + nome_traccia;
 
 					s = con.prepareStatement(query);
