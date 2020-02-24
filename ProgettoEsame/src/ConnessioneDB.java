@@ -156,15 +156,25 @@ public class ConnessioneDB
 		}
 	}
 	
-	public void InserisciAlbumDB(String tipo, String nome_album, String nome_artista, Date data_pubblicazione, Traccia[] traccia, Connection con) 
+	public boolean InserisciAlbumDB(String tipo, String nome_album, String nome_artista, Date data_pubblicazione, Traccia[] traccia, Connection con) 
 	{
 		try 
 		{
 			String query;
-			query = "SELECT FROM album_table WHERE nome_album = '"+ nome_album +"' AND artista = '" + nome_artista +"'";
 			PreparedStatement s;
+			
+			query = "SELECT FROM artista_table WHERE nome_artista = '" + nome_artista + "'";
 			s = con.prepareStatement(query);
 			ResultSet rs = s.executeQuery();
+			if(!rs.next())
+			{
+				System.err.println("artista non presente");
+				return false;
+			}
+			
+			query = "SELECT FROM album_table WHERE nome_album = '"+ nome_album +"' AND artista = '" + nome_artista +"'";
+			s = con.prepareStatement(query);
+			rs = s.executeQuery();
 			
 			if(!rs.next()) 
 			{
@@ -182,88 +192,118 @@ public class ConnessioneDB
 				System.out.println("album inserito");
 			}
 			else
+			{
 				System.out.println("album già esistente");
+				return false;
+			}
 		}
 		catch(SQLException e) 
 		{
 			System.err.println("inserimento album fallito");
+			return false;
 		}
 		
 		for(int i = 0; i < traccia.length; i++)
 		{
-			InserisciTracciaDB(traccia[i].nome_traccia, nome_album, nome_artista, con);
+			if(!InserisciTracciaDB(traccia[i].nome_traccia, nome_album, nome_artista, con))
+			{
+				System.err.println("errore inserimento traccia");
+				return false;
+			}
 		}
+		
+		return true;
 	}
 	
-	public void InserisciTracciaDB(String nome_traccia, String nome_album, String nome_artista, Connection con)
+	public boolean InserisciTracciaDB(String nome_traccia, String nome_album, String nome_artista, Connection con)
 	{
 		try
 		{
-			String nome_table = "table_" + nome_album + "_" + nome_artista;
+			String query = "SELECT FROM album_table WHERE nome_album = '"+ nome_album +"' AND artista = '" + nome_artista +"'";
 			PreparedStatement s;
-			DatabaseMetaData metadata = con.getMetaData();
-			ResultSet rs = metadata.getTables(null , null, nome_table, null);
-			if(!rs.next()) 
+			s = con.prepareStatement(query);
+			ResultSet rs = s.executeQuery();
+			
+			if(rs.next())
 			{
-				try
+				String nome_table = "table_" + nome_album + "_" + nome_artista;
+				DatabaseMetaData metadata = con.getMetaData();
+				rs = metadata.getTables(null, null, nome_table, null);
+				if (!rs.next()) 
 				{
-					//creazione tabella
-					String query = "CREATE TABLE " + nome_table + " (n integer unique primary key, traccia text , album text, artista text, views_traccia integer)";
+					try 
+					{
+						// creazione tabella
+						query = "CREATE TABLE " + nome_table
+								+ " (n integer unique primary key, traccia text , album text, artista text, views_traccia integer)";
+						s = con.prepareStatement(query);
+						s.executeUpdate();
+						// aggiunta fk
+						String nome_fk = nome_table + "_fk";
+						query = "ALTER TABLE " + nome_table + " ADD CONSTRAINT " + nome_fk
+								+ " FOREIGN KEY(album, artista) REFERENCES album_table (nome_album, artista) ON DELETE CASCADE";
+						s = con.prepareStatement(query);
+						s.executeUpdate();
+						s.close();
+						System.out.println("tabella creata");
+
+						// inserimento trigger
+						InserisciTriggerTracciaTable(nome_table, nome_album, nome_artista, con);
+					} 
+					catch (SQLException e)
+					{
+						System.err.println("creazione tabella fallito");
+						e.printStackTrace();
+						return false;
+					}
+				}
+				// inserimento traccia
+				try 
+				{
+					query = "SELECT traccia FROM " + nome_table + " WHERE traccia = ?";
 					s = con.prepareStatement(query);
-					s.executeUpdate();
-					// aggiunta fk
-					String nome_fk = nome_table + "_fk";
-					query = "ALTER TABLE " + nome_table + " ADD CONSTRAINT " + nome_fk
-							+ " FOREIGN KEY(album, artista) REFERENCES album_table (nome_album, artista) ON DELETE CASCADE";
-					s = con.prepareStatement(query);
-					s.executeUpdate();
-					s.close();
-					System.out.println("tabella creata");
-				
-					//inserimento trigger
-					InserisciTriggerTracciaTable(nome_table, nome_album, nome_artista, con);
-				} 
+					s.setString(1, nome_traccia);
+					rs = s.executeQuery();
+					if (!rs.next()) 
+					{
+						query = "INSERT INTO " + nome_table + String.format(" VALUES (?, ?, ?, ?, 0)");
+						// + "SELECT FROM " + nome_table + " WHERE traccia <> " + nome_traccia;
+
+						s = con.prepareStatement(query);
+						s.setInt(1, NumeroRigheDB(nome_table, con) + 1);// numero traccia
+						s.setString(2, nome_traccia);// nome traccia
+						s.setString(3, nome_album);// nome album
+						s.setString(4, nome_artista);// nome artista
+						s.executeUpdate();
+
+						s.close();
+						System.out.println("traccia inserita");
+					}
+					else
+					{
+						System.out.println("traccia già presente");
+						return false;
+					}
+				}
 				catch (SQLException e) 
 				{
-					System.err.println("creazione tabella fallito");
+					System.err.println("inserimento fallito");
 					e.printStackTrace();
+					return false;
 				}
 			}
-			// inserimento traccia
-			try 
+			else
 			{
-				String query = "SELECT traccia FROM " + nome_table + " WHERE traccia = ?";
-				s = con.prepareStatement(query);
-				s.setString(1, nome_traccia);
-				rs= s.executeQuery();
-				if(!rs.next()) 
-				{
-					query = "INSERT INTO " + nome_table + String.format(" VALUES (?, ?, ?, ?, 0)");
-					// + "SELECT FROM " + nome_table + " WHERE traccia <> " + nome_traccia;
-
-					s = con.prepareStatement(query);
-					s.setInt(1, NumeroRigheDB(nome_table, con) + 1);// numero traccia
-					s.setString(2, nome_traccia);// nome traccia
-					s.setString(3, nome_album);// nome album
-					s.setString(4, nome_artista);// nome artista
-					s.executeUpdate();
-
-					s.close();
-					System.out.println("traccia inserita");
-				}
-				else
-					System.out.println("traccia già presente");
-			} 
-			catch (SQLException e) 
-			{
-				System.err.println("inserimento fallito");
-				e.printStackTrace();
+				System.err.println("album non presente");//return false
 			}
 		}
 		catch(SQLException e) 
 		{
 			System.err.println("errore sql");
+			return false;
 		}
+		
+		return true;
 	}
 	
 	void InserisciTriggerTracciaTable(String nome_table, String nome_album, String nome_artista, Connection con) 
@@ -335,7 +375,7 @@ public class ConnessioneDB
 		}
 	}
 	
-	public void InserisciArtista(String nome_artista, Connection con)
+	public boolean InserisciArtista(String nome_artista, Connection con)
 	{
 		try
 		{
@@ -353,14 +393,20 @@ public class ConnessioneDB
 				System.out.println("artista inserito");
 			}
 			else
+			{
 				System.out.println("artista già esistente");
+				return false;
+			}
 			rs.close();
 		}
 		catch(SQLException e)
 		{
 			System.err.println("errore insert artista");
 			e.printStackTrace();
+			return false;
 		}
+		
+		return true;
 	}
 	
 	public void EliminaArtista(String nome_artista, Connection con)

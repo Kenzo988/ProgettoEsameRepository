@@ -116,16 +116,16 @@ public class Controller
 	/** inserisce un album andando compreso di traccie
 	 * tipo indica se è un ep/singolo/album
 	*/
-	public void InserisciAlbum(String tipo, String nome_album, String nome_artista, Date data_pubblicazione, Traccia[] traccia) 
+	public boolean InserisciAlbum(String tipo, String nome_album, String nome_artista, Date data_pubblicazione, Traccia[] traccia) 
 	{
-		_myconnessione.InserisciAlbumDB(tipo, nome_album, nome_artista, data_pubblicazione, traccia, con);
+		return _myconnessione.InserisciAlbumDB(tipo, nome_album, nome_artista, data_pubblicazione, traccia, con);
 	}
 	
 	/** inserisce una traccia singolo in un album
 	*/
-	public void InserisciTraccia(String nome_traccia, String nome_album, String nome_artista)
+	public boolean InserisciTraccia(String nome_traccia, String nome_album, String nome_artista)
 	{
-		_myconnessione.InserisciTracciaDB(nome_traccia, nome_album, nome_artista, con);
+		return _myconnessione.InserisciTracciaDB(nome_traccia, nome_album, nome_artista, con);
 	}
 	
 	/** modifica il nome di una traccia
@@ -137,9 +137,9 @@ public class Controller
 	
 	/** inserisce un nuovo artista
 	*/
-	public void InserisciArtista(String nome_artista)
+	public boolean InserisciArtista(String nome_artista)
 	{
-		_myconnessione.InserisciArtista(nome_artista, con);
+		return _myconnessione.InserisciArtista(nome_artista, con);
 	}
 	
 	/** elimina un artista e tutti gli album ad esso collegati
