@@ -612,7 +612,6 @@ public class AlbumFrame extends JFrame{
 				    String message = "Inserisci una nuova traccia:";
 				    String new_name = JOptionPane.showInputDialog(frame, message);
 				    if (new_name == null) {
-				      // User clicked cancel
 				    }
 				    if(new_name.length()>0){
 						main.InserisciTraccia(new_name, selectedData, selectedData2);
