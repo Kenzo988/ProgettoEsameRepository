@@ -27,7 +27,7 @@ public class InserimentoAlbumFrame extends JFrame {
 	private JTextField nomeTraccia;
 	private JTable table;
 	private JTextField nomeAlbum;
-    private String[] tipoAlbum = { "ep" , "album"};
+    private String[] tipoAlbum = { "ep" , "album", "singolo"};
     private JComboBox<String> comboBox;
 	@SuppressWarnings("unused")
 	private boolean flag=false;
@@ -150,8 +150,6 @@ public class InserimentoAlbumFrame extends JFrame {
 						            nomeAlbum.getText(),nomeArtista.getText(),
 						            getDate(), traccia );
 				albumFrame.RefreshTable(ctrl);
-				nomeArtista.setText("");
-			    nomeAlbum.setText("");
 			    rimuoviTraccia();
 			    flag=false;
 			    nomeAlbum.setText("");

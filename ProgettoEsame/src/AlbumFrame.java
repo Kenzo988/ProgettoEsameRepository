@@ -304,13 +304,13 @@ public class AlbumFrame extends JFrame{
 		if(tmp=="Nome artista")
 			main.AggiornaTabella(table, "album", "artista", true);
 		if(tmp=="Followers")
-			main.AggiornaTabella(table, "album", "followers", true);
+			main.AggiornaTabella(table, "album", "followers", false);
 		if(tmp=="Views totali")
-			main.AggiornaTabella(table, "album", "views_totali", true);
+			main.AggiornaTabella(table, "album", "views_totali", false);
 		if(tmp=="Data pubblicazione")
-			main.AggiornaTabella(table, "album", "data_pubblicazione", true);
+			main.AggiornaTabella(table, "album", "data_pubblicazione", false);
 		if(tmp=="Retribuzione")
-			main.AggiornaTabella(table, "album", "retribuzione", true);
+			main.AggiornaTabella(table, "album", "retribuzione", false);
 		
 		ColumnRender();
 	}
@@ -399,10 +399,13 @@ public class AlbumFrame extends JFrame{
 		    table_1.removeColumn(tcol);
 		    }
 		    if(table_1.getColumnCount()!=3) {
-		    tcol = table_1.getColumnModel().getColumn(4);
+		    tcol = table_1.getColumnModel().getColumn(2);
 		    table_1.removeColumn(tcol);
 		    }
             table_1.getColumnModel().getColumn(0).setMaxWidth(20);
+            table_1.getColumnModel().getColumn(2).setMaxWidth(100);
+            table_1.getColumnModel().getColumn(2).setMinWidth(0);
+
         }
 		
 		
@@ -549,7 +552,7 @@ public class AlbumFrame extends JFrame{
 			if(n_track!=null) {
 			int n=Integer.parseInt(n_track);
 			int dialogButton = 0;
-			int dialogResult = JOptionPane.showConfirmDialog (null, "Vuoi Davvero Eliminare La traccia selezionata?",
+			int dialogResult = JOptionPane.showConfirmDialog (null, "Vuoi Davvero Eliminare La traccia selezionata? questa azione non può essere annullata",
 					                                          "Warning",dialogButton);
 			if(dialogResult == JOptionPane.YES_OPTION){
 			
@@ -562,6 +565,10 @@ public class AlbumFrame extends JFrame{
 		
 		private void EliminaTutteLeTracce(Controller main) {
 			if(selectedData!=null && selectedData2!=null) {
+				int dialogButton = 0;
+				int dialogResult = JOptionPane.showConfirmDialog (null, "Vuoi Davvero Eliminare tutte le tracce? questa azione non può essere annullata",
+						                                          "Warning",dialogButton);
+				if(dialogResult == JOptionPane.YES_OPTION){
 				int i=0;
 				while(i<=table_1.getRowCount()) {
 				main.EliminaTraccia(0, selectedData, selectedData2);
@@ -573,6 +580,7 @@ public class AlbumFrame extends JFrame{
 				setRightPane(main, selectedData, selectedData2);
 				ColumnRender2();
 				table_1.revalidate();
+			}
 			}
 			
 		}
