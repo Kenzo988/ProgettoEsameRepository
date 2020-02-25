@@ -74,8 +74,11 @@ public class Controller
 			nome_tabella = "album_table";
 		if(nome_tabella.equals("album"))
 			nome_tabella = "album_table";
+		else if(nome_tabella.equals("artista"))
+			nome_tabella = "artista_table";
 		else if(!nome_tabella.equals("artista_table"))
-			nome_tabella = "table_" + nome_tabella;
+			nome_tabella = "table_"+nome_tabella;
+
 		
 		table.setModel(new DefaultTableModel(
 				new Object[][] {

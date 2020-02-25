@@ -35,8 +35,8 @@ public class InserimentoArtistaFrame extends JFrame{
 		scrollPane.setViewportView(table);
 		
 		
-		main.AggiornaTabella(table, "album", "artista", false);
-		organizzaTabella();
+		main.AggiornaTabella(table, "artista", "nome_artista", false);
+		//organizzaTabella();
 		//
 	}
 
