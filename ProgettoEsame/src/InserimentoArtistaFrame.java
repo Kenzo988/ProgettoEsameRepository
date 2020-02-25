@@ -37,7 +37,7 @@ public class InserimentoArtistaFrame extends JFrame{
 		
 		main.AggiornaTabella(table, "album", "artista", false);
 		organizzaTabella();
-		
+		//
 	}
 
 	private void organizzaTabella() {

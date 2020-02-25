@@ -611,7 +611,7 @@ public class AlbumFrame extends JFrame{
 			    String message = "Inserisci nuovo nome per la traccia: "+table_1.getValueAt(row-1, 1);
 			    String new_name = JOptionPane.showInputDialog(frame, message);
 			    if (new_name == null) {
-			      // User clicked cancel
+			      // User clicked  cancel
 			    }
 			    if(new_name.length()>0) {
 			main.ModificaTraccia(row, new_name, selectedData, selectedData2);
