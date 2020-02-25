@@ -62,6 +62,8 @@ public class AlbumFrame extends JFrame{
 
 	public AlbumFrame(Controller main) {
 		InserimentoAlbumFrame frame2 = new InserimentoAlbumFrame(main,this);
+		InserimentoArtistaFrame frame3= new InserimentoArtistaFrame(main);
+
 		frame = new JFrame();
 
 		setTitle("Album Data");
@@ -111,7 +113,7 @@ public class AlbumFrame extends JFrame{
 	    table.setFillsViewportHeight(true);
 	
 		
-		main.AggiornaTabella(table, "album", "artista", true);
+		main.AggiornaTabella(table, "album", "artista", false);
 		
 		
 		System.out.println("aggiornato");
@@ -225,6 +227,18 @@ public class AlbumFrame extends JFrame{
 			
 		});
 		
+		JButton btnAggiungiArtista = new JButton("Aggiungi Artista");
+		btnAggiungiArtista.setAlignmentX(1.0f);
+		
+		btnAggiungiArtista.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame3.setVisible(true);
+				
+			}
+		});
+		
 		
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
@@ -251,11 +265,12 @@ public class AlbumFrame extends JFrame{
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(btnAggiungialbum, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnAggiungiTraccia, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnModificaTraccia, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnEliminaTracce, GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
 						.addComponent(btnEliminaAlbum, GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
 						.addComponent(btnEliminaTutteLe, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnAggiungiTraccia, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))
+						.addComponent(btnAggiungiArtista, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -275,7 +290,9 @@ public class AlbumFrame extends JFrame{
 							.addComponent(btnAggiungialbum, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnAggiungiTraccia, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-							.addGap(46)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnAggiungiArtista, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+							.addGap(58)
 							.addComponent(btnModificaTraccia, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnEliminaAlbum, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
@@ -394,7 +411,7 @@ public class AlbumFrame extends JFrame{
 		    
 			aColumn=2; 
 		    TableColumn tcol = table_1.getColumnModel().getColumn(aColumn);
-		    if(table.getColumnName(4)!="views_totali") {
+		    if(table_1.getColumnName(4)!="views_totali") {
 		    	System.out.println("tcol "+table.getColumnName(4));
 		    table_1.removeColumn(tcol);
 		    }
@@ -622,6 +639,7 @@ public class AlbumFrame extends JFrame{
 				}
 			
 		}
+		
 		
 }
 
