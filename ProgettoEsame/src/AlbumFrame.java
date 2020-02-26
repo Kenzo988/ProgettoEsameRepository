@@ -62,7 +62,7 @@ public class AlbumFrame extends JFrame{
 
 	public AlbumFrame(Controller main) {
 		InserimentoAlbumFrame frame2 = new InserimentoAlbumFrame(main,this);
-		InserimentoArtistaFrame frame3= new InserimentoArtistaFrame(main);
+		GestioneArtistaFrame frame3= new GestioneArtistaFrame(main);
 
 		frame = new JFrame();
 
@@ -227,7 +227,7 @@ public class AlbumFrame extends JFrame{
 			
 		});
 		
-		JButton btnAggiungiArtista = new JButton("Aggiungi Artista");
+		JButton btnAggiungiArtista = new JButton("Gestisci Artisti");
 		btnAggiungiArtista.setAlignmentX(1.0f);
 		
 		btnAggiungiArtista.addActionListener(new ActionListener() {
