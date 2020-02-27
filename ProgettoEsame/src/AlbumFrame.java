@@ -113,7 +113,7 @@ public class AlbumFrame extends JFrame{
 	    table.setFillsViewportHeight(true);
 	
 		
-		main.AggiornaTabella(table, "album", "artista", false);
+		main.AggiornaTabella(table, "album", "tipo", true);
 		
 		
 		System.out.println("aggiornato");
@@ -624,15 +624,17 @@ public class AlbumFrame extends JFrame{
 		
 		private void aggiungiTraccia(Controller main) {
 			if(selectedData!=null && selectedData2!=null) {
+				boolean flag=false;
 			
 				 JFrame frame = new JFrame();
 				    String message = "Inserisci una nuova traccia:";
 				    String new_name = JOptionPane.showInputDialog(frame, message);
 				    if (new_name == null) {
 				    }
-				    if(new_name.length()>0){
-						main.InserisciTraccia(new_name, selectedData, selectedData2);
-         				setRightPane(main, selectedData, selectedData2);
+				    if(new_name.length()>0)
+						flag = main.InserisciTraccia(new_name, selectedData, selectedData2);
+         		    if(flag==true) {
+						setRightPane(main, selectedData, selectedData2);
 				    }else JOptionPane.showMessageDialog(new JFrame(),
 						    "Reinserire valori", "Errore Inserimento",JOptionPane.ERROR_MESSAGE);
 

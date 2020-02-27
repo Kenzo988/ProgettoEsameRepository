@@ -5,7 +5,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -93,16 +92,21 @@ public class GestioneArtistaFrame extends JFrame{
 	
 
 	private void AggiungiArtista(Controller main) {
+		boolean flag=false;
 		JFrame frame = new JFrame();
 	    String message = "Inserisci un nuovo artista:";
 	    String new_name = JOptionPane.showInputDialog(frame, message);
 	    if (new_name == null) {
 	    }
-	    if(new_name.length()>0){
-			main.InserisciArtista(new_name);
+	    if(new_name.length()>0)
+			new_name=new_name.replaceAll(" ", "_");
+			flag=main.InserisciArtista(new_name);
+		
+		if(flag==true) { 	
+			refreshTable(main);
+
 	    }else JOptionPane.showMessageDialog(new JFrame(),
 			    "Reinserire valori", "Errore Inserimento",JOptionPane.ERROR_MESSAGE);
-	    refreshTable(main);
 
 	
 	}

@@ -30,10 +30,11 @@ public class InserimentoAlbumFrame extends JFrame {
     private String[] tipoAlbum = { "ep" , "album", "singolo"};
     private JComboBox<String> comboBox;
 	@SuppressWarnings("unused")
-	private boolean flag=false;
 	private int i=0;
 	private JTable table_1;
 	private TableColumn tColumn, tColumn2;
+	private String nAlbum;
+	private String nArtista;
 
 
 
@@ -139,6 +140,8 @@ public class InserimentoAlbumFrame extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				boolean flag=false;
+
 				organizzaDati();
 				
 				if(comboBox.getItemAt(comboBox.getSelectedIndex()).length() >0 && 
@@ -146,19 +149,25 @@ public class InserimentoAlbumFrame extends JFrame {
 						              nomeArtista.getText().length() >0
 						              && table_1.getRowCount()>0) {
 					
-				ctrl.InserisciAlbum(comboBox.getItemAt(comboBox.getSelectedIndex()),
-						            nomeAlbum.getText(),nomeArtista.getText(),
-						            getDate(), traccia );
-				albumFrame.RefreshTable(ctrl);
-			    rimuoviTraccia();
-			    flag=false;
-			    nomeAlbum.setText("");
-				nomeArtista.setText("");
+				flag=ctrl.InserisciAlbum(comboBox.getItemAt(comboBox.getSelectedIndex()),
+						            nAlbum,nArtista, getDate(), traccia );
 				}else {
 					JOptionPane.showMessageDialog(new JFrame(),
-				    "Reinserire valori", "Errore Inserimento",JOptionPane.ERROR_MESSAGE);
-					rimuoviTraccia();
-				}
+						    "Reinserire valori", "Errore Inserimento",JOptionPane.ERROR_MESSAGE);
+							}
+				
+				if(flag==false){
+					JOptionPane.showMessageDialog(new JFrame(),
+				    "Artista non presente, aggiungilo prima alla lista", "errore inserimento",JOptionPane.ERROR_MESSAGE);
+					}
+				
+				if(flag==true) 
+					albumFrame.RefreshTable(ctrl);
+			    
+				rimuoviTraccia();
+			    nomeAlbum.setText("");
+				nomeArtista.setText("");
+				
 			}
 
 			
@@ -298,8 +307,13 @@ public class InserimentoAlbumFrame extends JFrame {
 	       	}
 
 	}
-	//prepara l'invio delle tracce al database
+	//prepara l'invio al database
 	private void organizzaDati() {
+		nAlbum=nomeAlbum.getText();
+		nArtista = nomeArtista.getText();
+		nAlbum=nAlbum.replaceAll(" ", "_");
+		nArtista=nArtista.replaceAll(" ", "_");
+
 
 		traccia = new Traccia[table_1.getModel().getRowCount()];
 		for(int j=0; j<table_1.getModel().getRowCount(); j++) {
