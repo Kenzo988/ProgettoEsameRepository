@@ -46,6 +46,7 @@ public class GestioneArtistaFrame extends JFrame{
 		getContentPane().add(scrollPane);
 		
 		table = new JTable();
+		table.setDefaultEditor(Object.class, null);
 		scrollPane.setViewportView(table);
 		
 		
@@ -181,7 +182,6 @@ public class GestioneArtistaFrame extends JFrame{
 	      this.backgroundColor = backgroundColor;
 	      this.foregroundColor = foregroundColor;
 	      this.n=n;
-	     // this.setHorizontalAlignment(SwingConstants.CENTER);
 	      
 	   }
        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,   boolean hasFocus, int row, int column) {
@@ -193,10 +193,8 @@ public class GestioneArtistaFrame extends JFrame{
 			     
 		      
 		      return cell;
-		      
-
-   }
-}
+      }
+     }
 	
 }
 

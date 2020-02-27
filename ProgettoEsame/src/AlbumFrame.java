@@ -352,20 +352,16 @@ public class AlbumFrame extends JFrame{
 	            selectedData = (String) table.getValueAt(selectedRow[i], 1);
 	            selectedData2 = (String) table.getValueAt(selectedRow[i], 2);
                  rowRender(selectedRow[i]);
-
 	          }
 	        }
+	        
 	        System.out.println("Selected: " + selectedData+ " "+ selectedData2);
 	        if(selectedData!=null && selectedData2!=null) {
 	        lblresultSelezione.setText(selectedData);
 	        lblresultSelezione.setForeground(Color.RED);
 	        setRightPane(main,selectedData,selectedData2);
-
 	        }
-	      }
-
-		
-		
+	      }	
 	    });
 		
 	}
@@ -422,24 +418,21 @@ public class AlbumFrame extends JFrame{
             table_1.getColumnModel().getColumn(0).setMaxWidth(20);
             table_1.getColumnModel().getColumn(2).setMaxWidth(100);
             table_1.getColumnModel().getColumn(2).setMinWidth(0);
-
         }
-		
-		
-		}
-	
-	
-
-
-
-	private void RimuoviRow() {
-		DefaultTableModel dtm = (DefaultTableModel) this.table_1.getModel();
-		while(dtm.getRowCount()!=0) {
-			dtm.removeRow(0);
-		}
-		table_1.revalidate();
-		lblresultSelezione.setText("");
 	}
+	
+	
+
+
+
+	   private void RimuoviRow() {
+		  DefaultTableModel dtm = (DefaultTableModel) this.table_1.getModel();
+		  while(dtm.getRowCount()!=0) {
+			  dtm.removeRow(0);
+		  }
+		  table_1.revalidate();
+		  lblresultSelezione.setText("");
+	   }
 		
 
 	
@@ -461,12 +454,9 @@ public class AlbumFrame extends JFrame{
 			   }
 			   public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,   boolean hasFocus, int row, int column) {
 				      Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-				      
-				          
-				    	  cell.setBackground(backgroundColor);
-					     
-				      
-				      return cell;
+				            
+				    cell.setBackground(backgroundColor);
+					return cell;
 				      }
 			}
 		
@@ -481,10 +471,7 @@ public class AlbumFrame extends JFrame{
 			
 		    	 for(int i=0; i<table.getColumnCount(); i++) {
 			         tColumn = table.getColumnModel().getColumn(i);
-			         tColumn.setCellRenderer(new ColumnColorRenderer(Color.white, Color.black));
-		    	 
-		     
-		     
+			         tColumn.setCellRenderer(new ColumnColorRenderer(Color.white, Color.black));		     
 		    	 }
 			}
 		   //Centra e Colora le singole celle (row)
@@ -525,10 +512,7 @@ public class AlbumFrame extends JFrame{
 			for(int z=0; z<table.getColumnCount();z++) {
 				
 			         tColumn = table.getColumnModel().getColumn(z);
-			         tColumn.setCellRenderer(new RowColorRenderer(Color.lightGray, Color.black,selectedRow));
-			         
-			     
-			    	 
+			         tColumn.setCellRenderer(new RowColorRenderer(Color.lightGray, Color.black,selectedRow));    	 
 			}
 		}
 		
