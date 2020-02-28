@@ -428,6 +428,11 @@ public class ConnessioneDB
 				query = "DROP FUNCTION " + "function_table_" + rs.getString(2) + "_" + nome_artista;
 				s = con.prepareStatement(query);
 				s.executeUpdate();
+				//drop row
+				query = "DELETE FROM album_table WHERE artista = ?";
+				s = con.prepareStatement(query);
+				s.setString(1, nome_artista);
+				s.executeUpdate();
 			}
 			s.close();
 		}
