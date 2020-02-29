@@ -23,18 +23,18 @@ public class InserimentoAlbumFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private Traccia[] traccia;
 	private JFrame frame;
-	private JTextField nomeArtista;
 	private JTextField nomeTraccia;
 	private JTable table;
 	private JTextField nomeAlbum;
     private String[] tipoAlbum = { "ep" , "album", "singolo"};
+    private String[] nomeArtisti;
     private JComboBox<String> comboBox;
-	@SuppressWarnings("unused")
 	private int i=0;
 	private JTable table_1;
 	private TableColumn tColumn, tColumn2;
 	private String nAlbum;
 	private String nArtista;
+	private JComboBox<String> comboBox_1;
 
 
 
@@ -69,11 +69,19 @@ public class InserimentoAlbumFrame extends JFrame {
 		lblNomeart.setBounds(10, 64, 91, 14);
 		getContentPane().add(lblNomeart);
 		
+		comboBox_1 = new JComboBox<String>();
+		comboBox_1.setBounds(99, 61, 237, 20);
+		getContentPane().add(comboBox_1);
 		
-		nomeArtista = new JTextField();
-		nomeArtista.setBounds(99, 61, 340, 20);
+		initializeNomeArtisti(ctrl);
+		for(String a:nomeArtisti) {
+			comboBox_1.addItem(a);
+			}
+		
+		/*nomeArtista = new JTextField();
+		nomeArtista.setBounds(217, 33, 98, 20);
 		getContentPane().add(nomeArtista);
-		nomeArtista.setColumns(10);
+		nomeArtista.setColumns(10);*/
 		
 		
 		JLabel lblNomeAlbum = new JLabel("Nome Album:");
@@ -144,13 +152,11 @@ public class InserimentoAlbumFrame extends JFrame {
 
 				organizzaDati();
 				
-				if(comboBox.getItemAt(comboBox.getSelectedIndex()).length() >0 && 
-						              nomeAlbum.getText().length() >0 && 
-						              nomeArtista.getText().length() >0
-						              && table_1.getRowCount()>0) {
+				if(nomeAlbum.getText().length() >0 && table_1.getRowCount()>0) {
 					
 				flag=ctrl.InserisciAlbum(comboBox.getItemAt(comboBox.getSelectedIndex()),
-						            nAlbum,nArtista, getDate(), traccia );
+						            nAlbum,comboBox_1.getItemAt(comboBox_1.getSelectedIndex()), 
+						            getDate(), traccia );
 				}else {
 					JOptionPane.showMessageDialog(new JFrame(),
 						    "Reinserire valori", "Errore Inserimento",JOptionPane.ERROR_MESSAGE);
@@ -166,7 +172,7 @@ public class InserimentoAlbumFrame extends JFrame {
 			    
 				rimuoviTraccia();
 			    nomeAlbum.setText("");
-				nomeArtista.setText("");
+
 				
 			}
 
@@ -217,12 +223,45 @@ public class InserimentoAlbumFrame extends JFrame {
 		ColumnRender();
 		scrollPane.setViewportView(table);
 		scrollPane2.setViewportView(table_1);
+		
+		JButton btnRefresh = new JButton("refresh\r\n");
+		btnRefresh.setBounds(346, 60, 93, 23);
+		getContentPane().add(btnRefresh);
+		
+		btnRefresh.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				initializeNomeArtisti(ctrl);
+				for(String a:nomeArtisti) {
+					comboBox_1.addItem(a);
+					}
+				
+			}
+		});
+		
+		
 
 		
 		
 	}
 
 	
+	private void initializeNomeArtisti(Controller ctrl) {
+		JTable table_tmp= new JTable();
+		ctrl.AggiornaTabella(table_tmp, "artista", "nome_artista", true);
+		nomeArtisti = new String[table_tmp.getModel().getRowCount()];
+
+        for(int i=0; i<table_tmp.getRowCount(); i++) {
+        	nomeArtisti[i] = new String();
+
+        	nomeArtisti[i] = (String) table_tmp.getValueAt(i, 0);
+        }
+        table_tmp=null;
+		
+	}
+
+
 	private void AggiungiAlbum() {
       
        
@@ -232,7 +271,7 @@ public class InserimentoAlbumFrame extends JFrame {
         dtm.removeRow(0);*/
 	    if(dtm.getColumnCount()==4) {
 	    dtm.addRow(new Object[] { comboBox.getItemAt(comboBox.getSelectedIndex()),
-	    		                  nomeAlbum.getText(), nomeArtista.getText(), 
+	    		                  nomeAlbum.getText(), comboBox_1.getItemAt(comboBox_1.getSelectedIndex()), 
 	    		                  getDate()});
 	    }
 	    
@@ -310,7 +349,7 @@ public class InserimentoAlbumFrame extends JFrame {
 	//prepara l'invio al database
 	private void organizzaDati() {
 		nAlbum=nomeAlbum.getText();
-		nArtista = nomeArtista.getText();
+		nArtista = comboBox_1.getItemAt(comboBox_1.getSelectedIndex());
 		nAlbum=nAlbum.replaceAll(" ", "_");
 		nArtista=nArtista.replaceAll(" ", "_");
 
@@ -322,7 +361,7 @@ public class InserimentoAlbumFrame extends JFrame {
 			traccia[j].n_traccia = j+1;
 			traccia[j].nome_traccia = (String) table_1.getModel().getValueAt(j, 1);
 			traccia[j].nome_album = nomeAlbum.getText();
-			traccia[j].nome_artista = nomeArtista.getText();
+			traccia[j].nome_artista = comboBox_1.getItemAt(comboBox_1.getSelectedIndex());
 		}
 	}
 }

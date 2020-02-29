@@ -62,7 +62,7 @@ public class AlbumFrame extends JFrame{
 
 	public AlbumFrame(Controller main) {
 		InserimentoAlbumFrame frame2 = new InserimentoAlbumFrame(main,this);
-		GestioneArtistaFrame frame3= new GestioneArtistaFrame(main);
+		GestioneArtistaFrame frame3= new GestioneArtistaFrame(main,this);
 
 		frame = new JFrame();
 

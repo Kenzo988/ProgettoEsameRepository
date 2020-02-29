@@ -30,7 +30,7 @@ public class GestioneArtistaFrame extends JFrame{
 	private String selectedData;
 	private TableColumn tColumn;
 
-	public GestioneArtistaFrame(Controller main){
+	public GestioneArtistaFrame(Controller main, AlbumFrame albumFrame){
 		setTitle("Aggiungi Artista");
 		frame = new JFrame();
 		setBounds(100, 100, 490, 300);
@@ -72,7 +72,7 @@ public class GestioneArtistaFrame extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				eliminaArtista(main);
+				eliminaArtista(main,albumFrame);
 				
 			}
 
@@ -102,9 +102,11 @@ public class GestioneArtistaFrame extends JFrame{
 	    if(new_name.length()>0)
 			new_name=new_name.replaceAll(" ", "_");
 			flag=main.InserisciArtista(new_name);
+			
 		
 		if(flag==true) { 	
 			refreshTable(main);
+			
 
 	    }else JOptionPane.showMessageDialog(new JFrame(),
 			    "Reinserire valori", "Errore Inserimento",JOptionPane.ERROR_MESSAGE);
@@ -112,7 +114,7 @@ public class GestioneArtistaFrame extends JFrame{
 	
 	}
 	
-	private void eliminaArtista(Controller main) {
+	private void eliminaArtista(Controller main,AlbumFrame albumFrame) {
 		if(selectedData!=null ) {
 			int dialogButton = 0;
 			int dialogResult = JOptionPane.showConfirmDialog (null, "Vuoi Davvero Eliminare L'Artista: ["+selectedData+"], Questa azione non può essere annullata",
@@ -121,6 +123,7 @@ public class GestioneArtistaFrame extends JFrame{
 			
 				main.EliminaArtista(selectedData);
 				refreshTable(main);
+				albumFrame.RefreshTable(main);
 
 			}
 		}
