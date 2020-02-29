@@ -232,6 +232,7 @@ public class InserimentoAlbumFrame extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				comboBox_1.removeAllItems();
 				initializeNomeArtisti(ctrl);
 				for(String a:nomeArtisti) {
 					comboBox_1.addItem(a);
