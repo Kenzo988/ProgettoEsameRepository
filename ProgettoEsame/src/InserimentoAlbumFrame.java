@@ -39,6 +39,8 @@ public class InserimentoAlbumFrame extends JFrame {
 
 
 	public InserimentoAlbumFrame(Controller ctrl, AlbumFrame albumFrame) {
+		getContentPane().setForeground(Color.WHITE);
+		getContentPane().setBackground(Color.BLACK);
 		frame = new JFrame();
 		frame.setTitle("Inserimento Album");
 	
@@ -49,11 +51,15 @@ public class InserimentoAlbumFrame extends JFrame {
 		getContentPane().setLayout(null);
 		
 		JLabel lblAggiungiAlbum = new JLabel("Aggiungi Album:");
+		lblAggiungiAlbum.setForeground(Color.WHITE);
+		lblAggiungiAlbum.setBackground(Color.BLACK);
 		lblAggiungiAlbum.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblAggiungiAlbum.setBounds(10, 11, 166, 21);
 		getContentPane().add(lblAggiungiAlbum);
 		
 		JLabel lblTipoAlbum = new JLabel("Tipo Album:");
+		lblTipoAlbum.setForeground(Color.WHITE);
+		lblTipoAlbum.setBackground(Color.BLACK);
 		lblTipoAlbum.setBounds(10, 36, 91, 14);
 		getContentPane().add(lblTipoAlbum);
 			
@@ -66,6 +72,8 @@ public class InserimentoAlbumFrame extends JFrame {
 			}
 		
 		JLabel lblNomeart = new JLabel("Nome Artista:");
+		lblNomeart.setForeground(Color.WHITE);
+		lblNomeart.setBackground(Color.BLACK);
 		lblNomeart.setBounds(10, 64, 91, 14);
 		getContentPane().add(lblNomeart);
 		
@@ -77,14 +85,11 @@ public class InserimentoAlbumFrame extends JFrame {
 		for(String a:nomeArtisti) {
 			comboBox_1.addItem(a);
 			}
-		
-		/*nomeArtista = new JTextField();
-		nomeArtista.setBounds(217, 33, 98, 20);
-		getContentPane().add(nomeArtista);
-		nomeArtista.setColumns(10);*/
-		
+
 		
 		JLabel lblNomeAlbum = new JLabel("Nome Album:");
+		lblNomeAlbum.setForeground(Color.WHITE);
+		lblNomeAlbum.setBackground(Color.BLACK);
 		lblNomeAlbum.setBounds(10, 91, 91, 14);
 		getContentPane().add(lblNomeAlbum);
 		
@@ -94,11 +99,15 @@ public class InserimentoAlbumFrame extends JFrame {
 		getContentPane().add(nomeAlbum);
 		
 		JLabel lblAggiungitraccia = new JLabel("Aggiungi Traccia:");
+		lblAggiungitraccia.setForeground(Color.WHITE);
+		lblAggiungitraccia.setBackground(Color.BLACK);
 		lblAggiungitraccia.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblAggiungitraccia.setBounds(10, 116, 166, 17);
 		getContentPane().add(lblAggiungitraccia);
 		
 		JLabel lblNomeTraccia = new JLabel("Nome Traccia:");
+		lblNomeTraccia.setForeground(Color.WHITE);
+		lblNomeTraccia.setBackground(Color.BLACK);
 		lblNomeTraccia.setBounds(10, 142, 91, 14);
 		getContentPane().add(lblNomeTraccia);
 		
@@ -108,6 +117,8 @@ public class InserimentoAlbumFrame extends JFrame {
 		getContentPane().add(nomeTraccia);
 		
 		JButton btnSalvaAlbum = new JButton("Salva Album");
+		btnSalvaAlbum.setForeground(Color.WHITE);
+		btnSalvaAlbum.setBackground(Color.BLACK);
 		btnSalvaAlbum.setBounds(449, 33, 107, 73);
 		getContentPane().add(btnSalvaAlbum);
 		
@@ -126,6 +137,8 @@ public class InserimentoAlbumFrame extends JFrame {
 			}});
 		
 		JButton btnSalvaTraccia = new JButton("Salva Traccia");
+		btnSalvaTraccia.setForeground(Color.WHITE);
+		btnSalvaTraccia.setBackground(Color.BLACK);
 		btnSalvaTraccia.setBounds(449, 140, 107, 21);
 		getContentPane().add(btnSalvaTraccia);
 		
@@ -141,6 +154,8 @@ public class InserimentoAlbumFrame extends JFrame {
 		
 		
 		JButton btnConferma = new JButton("Conferma");
+		btnConferma.setForeground(Color.WHITE);
+		btnConferma.setBackground(Color.BLACK);
 		btnConferma.setBounds(205, 170, 141, 21);
 		getContentPane().add(btnConferma);
 		
@@ -185,6 +200,8 @@ public class InserimentoAlbumFrame extends JFrame {
 		scrollPane.setBounds(10, 202, 546, 42);
 		getContentPane().add(scrollPane);
 		table = new JTable();
+		table.setBackground(Color.BLACK);
+		table.setForeground(Color.WHITE);
 		table.setFillsViewportHeight(true);
 		table.setShowGrid(false);
 		table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Tipo Album", "Nome Album", 
@@ -211,6 +228,9 @@ public class InserimentoAlbumFrame extends JFrame {
 		getContentPane().add(scrollPane2);
 		
 		table_1 = new JTable();
+		table_1.setFillsViewportHeight(true);
+		table_1.setForeground(Color.WHITE);
+		table_1.setBackground(Color.BLACK);
 		table_1.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
@@ -225,6 +245,8 @@ public class InserimentoAlbumFrame extends JFrame {
 		scrollPane2.setViewportView(table_1);
 		
 		JButton btnRefresh = new JButton("refresh\r\n");
+		btnRefresh.setForeground(Color.WHITE);
+		btnRefresh.setBackground(Color.BLACK);
 		btnRefresh.setBounds(346, 60, 93, 23);
 		getContentPane().add(btnRefresh);
 		
@@ -337,13 +359,13 @@ public class InserimentoAlbumFrame extends JFrame {
 	public void ColumnRender() {
 	     for(int i=0; i<4; i++) {
 	         tColumn = table.getColumnModel().getColumn(i);
-	         tColumn.setCellRenderer(new ColumnColorRenderer(Color.white, Color.black));
+	         tColumn.setCellRenderer(new ColumnColorRenderer(Color.black, Color.white));
 	     
 	    	 }
 	
 	     for(int i=0; i<2; i++) {
 	         tColumn2 = table_1.getColumnModel().getColumn(i);
-	         tColumn2.setCellRenderer(new ColumnColorRenderer(Color.white, Color.black));
+	         tColumn2.setCellRenderer(new ColumnColorRenderer(Color.black, Color.white));
 	       	}
 
 	}

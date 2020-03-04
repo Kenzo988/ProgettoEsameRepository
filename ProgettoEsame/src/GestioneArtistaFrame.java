@@ -31,6 +31,8 @@ public class GestioneArtistaFrame extends JFrame{
 	private TableColumn tColumn;
 
 	public GestioneArtistaFrame(Controller main, AlbumFrame albumFrame){
+		getContentPane().setForeground(Color.WHITE);
+		getContentPane().setBackground(Color.BLACK);
 		setTitle("Aggiungi Artista");
 		frame = new JFrame();
 		setBounds(100, 100, 490, 300);
@@ -38,6 +40,7 @@ public class GestioneArtistaFrame extends JFrame{
 		getContentPane().setLayout(null);
 		
 		JLabel lblListaArtisti = new JLabel("Gestione artisti:");
+		lblListaArtisti.setForeground(Color.WHITE);
 		lblListaArtisti.setBounds(10, 11, 129, 14);
 		getContentPane().add(lblListaArtisti);
 		
@@ -46,6 +49,9 @@ public class GestioneArtistaFrame extends JFrame{
 		getContentPane().add(scrollPane);
 		
 		table = new JTable();
+		table.setFillsViewportHeight(true);
+		table.setForeground(Color.WHITE);
+		table.setBackground(Color.BLACK);
 		table.setDefaultEditor(Object.class, null);
 		scrollPane.setViewportView(table);
 		
@@ -54,6 +60,8 @@ public class GestioneArtistaFrame extends JFrame{
 		tableEvents();
 		
 		JButton btnAggiungiArtista = new JButton("Nuovo artista");
+		btnAggiungiArtista.setForeground(Color.WHITE);
+		btnAggiungiArtista.setBackground(Color.BLACK);
 		btnAggiungiArtista.setBounds(341, 47, 123, 23);
 		getContentPane().add(btnAggiungiArtista);
 		
@@ -65,6 +73,8 @@ public class GestioneArtistaFrame extends JFrame{
 		});
 		
 		JButton btnEliminaArtista = new JButton("Elimina artista");
+		btnEliminaArtista.setForeground(Color.WHITE);
+		btnEliminaArtista.setBackground(Color.BLACK);
 		btnEliminaArtista.setBounds(341, 81, 123, 23);
 		getContentPane().add(btnEliminaArtista);
 		
@@ -167,7 +177,7 @@ public class GestioneArtistaFrame extends JFrame{
 		for(int z=0; z<table.getColumnCount();z++) {
 			
 		   tColumn = table.getColumnModel().getColumn(z);
-		   tColumn.setCellRenderer(new RowColorRenderer(Color.lightGray, Color.black,selectedRow));  	 
+		   tColumn.setCellRenderer(new RowColorRenderer(Color.lightGray, Color.white,selectedRow));  	 
 		}
 	}
 	
@@ -192,7 +202,7 @@ public class GestioneArtistaFrame extends JFrame{
 		      
 		          if(row==n)
 		    	  cell.setBackground(backgroundColor);
-		          else cell.setBackground(Color.white);
+		          else cell.setBackground(Color.black);
 			     
 		      
 		      return cell;

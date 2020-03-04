@@ -31,13 +31,15 @@ public class LoginFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 277, 255);
 		frame = new JPanel();
-		frame.setForeground(Color.BLACK);
-		frame.setBackground(Color.WHITE);
+		frame.setForeground(Color.WHITE);
+		frame.setBackground(Color.BLACK);
 		frame.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(frame);
 		frame.setLayout(null);
 		
 		JLabel lblLogin = new JLabel("Login");
+		lblLogin.setForeground(Color.WHITE);
+		lblLogin.setBackground(Color.BLACK);
 		lblLogin.setHorizontalAlignment(SwingConstants.CENTER);
 		lblLogin.setFont(new Font("Corbel", Font.BOLD | Font.ITALIC, 21));
 		lblLogin.setBounds(0, 11, 251, 34);
@@ -49,6 +51,8 @@ public class LoginFrame extends JFrame {
 		usernameField.setColumns(10);
 		
 		JLabel lblUsername = new JLabel("Username:");
+		lblUsername.setForeground(Color.WHITE);
+		lblUsername.setBackground(Color.BLACK);
 		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUsername.setBounds(10, 58, 77, 14);
 		frame.add(lblUsername);
@@ -59,11 +63,15 @@ public class LoginFrame extends JFrame {
 		frame.add(passwordField);
 		
 		JLabel lblPassword = new JLabel("Password:");
+		lblPassword.setForeground(Color.WHITE);
+		lblPassword.setBackground(Color.BLACK);
 		lblPassword.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPassword.setBounds(10, 89, 77, 14);
 		frame.add(lblPassword);
 		
 		JButton btnConferma = new JButton("Conferma");
+		btnConferma.setForeground(Color.WHITE);
+		btnConferma.setBackground(Color.BLACK);
 		btnConferma.setBounds(59, 136, 131, 48);
 		frame.add(btnConferma);
 		
@@ -88,8 +96,7 @@ public class LoginFrame extends JFrame {
 	
 	
 
-		  usernameField.setText("postgres");
-        passwordField.setText("password");
+	
 	}
 
 	

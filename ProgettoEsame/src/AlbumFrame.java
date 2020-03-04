@@ -61,17 +61,19 @@ public class AlbumFrame extends JFrame{
 
 
 	public AlbumFrame(Controller main) {
+		getContentPane().setBackground(Color.BLACK);
+		getContentPane().setForeground(Color.WHITE);
 		InserimentoAlbumFrame frame2 = new InserimentoAlbumFrame(main,this);
 		GestioneArtistaFrame frame3= new GestioneArtistaFrame(main,this);
 
 		frame = new JFrame();
 
 		setTitle("Album Data");
-		setBounds(100, 100, 1300, 788);
+		setBounds(100, 100, 1920, 788);
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		frame.setForeground(Color.BLACK);
-		frame.setBackground(Color.WHITE);
+		frame.setForeground(Color.WHITE);
+		frame.setBackground(Color.BLACK);
 		
 	
 		frame.getContentPane().setLayout(new BoxLayout(frame, BoxLayout.X_AXIS));
@@ -86,6 +88,8 @@ public class AlbumFrame extends JFrame{
 
 		
 		table_1 = new JTable();
+		table_1.setForeground(Color.WHITE);
+		table_1.setBackground(Color.BLACK);
 		table_1.setFillsViewportHeight(true);
 	
 		
@@ -95,6 +99,8 @@ public class AlbumFrame extends JFrame{
 		
 		
 		btnAggiungialbum = new JButton("Aggiungi Album");
+		btnAggiungialbum.setBackground(Color.BLACK);
+		btnAggiungialbum.setForeground(Color.WHITE);
 		btnAggiungialbum.setAlignmentX(Component.BOTTOM_ALIGNMENT);
 		
 		btnAggiungialbum.addActionListener(new ActionListener() {
@@ -108,6 +114,8 @@ public class AlbumFrame extends JFrame{
 		
 		
 	    table = new JTable();
+	    table.setForeground(Color.WHITE);
+	    table.setBackground(Color.BLACK);
 	    table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 	    
 	    table.setFillsViewportHeight(true);
@@ -129,6 +137,7 @@ public class AlbumFrame extends JFrame{
 		leftPane.setViewportView(table);
 		
 		JLabel lblAlbumSelezionato = new JLabel("Album Selezionato:");
+		lblAlbumSelezionato.setForeground(Color.WHITE);
 		lblAlbumSelezionato.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
         lblresultSelezione = new JLabel("");
@@ -136,9 +145,12 @@ public class AlbumFrame extends JFrame{
 		lblresultSelezione.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		lblListaAlbums = new JLabel("Lista Albums:");
+		lblListaAlbums.setForeground(Color.WHITE);
 		lblListaAlbums.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
 		JButton btnEliminaAlbum = new JButton("Elimina Album");
+		btnEliminaAlbum.setBackground(Color.BLACK);
+		btnEliminaAlbum.setForeground(Color.WHITE);
 		btnEliminaAlbum.addActionListener(new ActionListener() {
 			
 			@Override
@@ -154,6 +166,8 @@ public class AlbumFrame extends JFrame{
 		btnEliminaAlbum.setAlignmentX(1.0f);
 		
 		JButton btnEliminaTracce = new JButton("Elimina Traccia");
+		btnEliminaTracce.setBackground(Color.BLACK);
+		btnEliminaTracce.setForeground(Color.WHITE);
 		btnEliminaTracce.setAlignmentX(1.0f);
 		
 		btnEliminaTracce.addActionListener(new ActionListener() {
@@ -167,6 +181,7 @@ public class AlbumFrame extends JFrame{
 		});
 		
 		JLabel lblOrdinaAlbums = new JLabel("Ordina Albums per:");
+		lblOrdinaAlbums.setForeground(Color.WHITE);
 		lblOrdinaAlbums.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		comboBox = new JComboBox<String>();
@@ -187,6 +202,8 @@ public class AlbumFrame extends JFrame{
 		});
 		
 		JButton btnEliminaTutteLe = new JButton("Elimina Tutte le tracce");
+		btnEliminaTutteLe.setBackground(Color.BLACK);
+		btnEliminaTutteLe.setForeground(Color.WHITE);
 		btnEliminaTutteLe.setAlignmentX(1.0f);
 		
 		btnEliminaTutteLe.addActionListener(new ActionListener() {
@@ -201,6 +218,8 @@ public class AlbumFrame extends JFrame{
 		});
 		
 		btnModificaTraccia = new JButton("Modifica traccia");
+		btnModificaTraccia.setBackground(Color.BLACK);
+		btnModificaTraccia.setForeground(Color.WHITE);
 		btnModificaTraccia.setAlignmentX(1.0f);
 		
         btnModificaTraccia.addActionListener(new ActionListener() {
@@ -214,6 +233,8 @@ public class AlbumFrame extends JFrame{
 		});
 		
 		btnAggiungiTraccia = new JButton("Aggiungi Traccia");
+		btnAggiungiTraccia.setBackground(Color.BLACK);
+		btnAggiungiTraccia.setForeground(Color.WHITE);
 		btnAggiungiTraccia.setAlignmentX(1.0f);
 		
 		btnAggiungiTraccia.addActionListener(new ActionListener() {
@@ -228,6 +249,8 @@ public class AlbumFrame extends JFrame{
 		});
 		
 		JButton btnAggiungiArtista = new JButton("Gestisci Artisti");
+		btnAggiungiArtista.setBackground(Color.BLACK);
+		btnAggiungiArtista.setForeground(Color.WHITE);
 		btnAggiungiArtista.setAlignmentX(1.0f);
 		
 		btnAggiungiArtista.addActionListener(new ActionListener() {
@@ -249,28 +272,28 @@ public class AlbumFrame extends JFrame{
 						.addComponent(leftPane, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 834, GroupLayout.PREFERRED_SIZE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblListaAlbums, GroupLayout.PREFERRED_SIZE, 132, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 363, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 373, Short.MAX_VALUE)
 							.addComponent(lblOrdinaAlbums)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)
-							.addGap(4)))
+							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 208, GroupLayout.PREFERRED_SIZE)
+							.addGap(10)))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(8)
 							.addComponent(lblAlbumSelezionato)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(lblresultSelezione, GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblresultSelezione, GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))
 						.addComponent(rightPane, GroupLayout.PREFERRED_SIZE, 323, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnAggiungialbum, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnAggiungiTraccia, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnModificaTraccia, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnEliminaTracce, GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
-						.addComponent(btnEliminaAlbum, GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
-						.addComponent(btnEliminaTutteLe, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnAggiungiArtista, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE))
+						.addComponent(btnAggiungialbum, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+						.addComponent(btnAggiungiTraccia, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+						.addComponent(btnModificaTraccia, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+						.addComponent(btnEliminaTracce, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+						.addComponent(btnEliminaAlbum, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+						.addComponent(btnAggiungiArtista, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+						.addComponent(btnEliminaTutteLe, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -281,10 +304,10 @@ public class AlbumFrame extends JFrame{
 						.addComponent(lblresultSelezione, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 							.addComponent(lblOrdinaAlbums, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblAlbumSelezionato)
 							.addComponent(lblListaAlbums, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
-							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblAlbumSelezionato)))
+					.addPreferredGap(ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(btnAggiungialbum, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
@@ -302,7 +325,7 @@ public class AlbumFrame extends JFrame{
 							.addComponent(btnEliminaTutteLe, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE))
 						.addComponent(leftPane, GroupLayout.PREFERRED_SIZE, 616, GroupLayout.PREFERRED_SIZE)
 						.addComponent(rightPane, GroupLayout.PREFERRED_SIZE, 616, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(91, Short.MAX_VALUE))
+					.addContainerGap(93, Short.MAX_VALUE))
 		);
 		getContentPane().setLayout(groupLayout);
 		
@@ -355,7 +378,6 @@ public class AlbumFrame extends JFrame{
 	          }
 	        }
 	        
-	        System.out.println("Selected: " + selectedData+ " "+ selectedData2);
 	        if(selectedData!=null && selectedData2!=null) {
 	        lblresultSelezione.setText(selectedData);
 	        lblresultSelezione.setForeground(Color.RED);
@@ -386,7 +408,7 @@ public class AlbumFrame extends JFrame{
 	            rowRenderRight(selectedRow[i]);
 
 	          }}
-		System.out.println("track n: "+selectedData3);}
+		}
 		});
 	}
      
@@ -395,7 +417,7 @@ public class AlbumFrame extends JFrame{
 		for(int z=0; z<table_1.getColumnCount();z++) {
 			
 		   tColumn2 = table_1.getColumnModel().getColumn(z);
-		   tColumn2.setCellRenderer(new RowColorRenderer(Color.lightGray, Color.black,selectedRow));  	 
+		   tColumn2.setCellRenderer(new RowColorRenderer(Color.lightGray, Color.white,selectedRow));  	 
 		}
 	}
 	
@@ -408,7 +430,6 @@ public class AlbumFrame extends JFrame{
 			aColumn=2; 
 		    TableColumn tcol = table_1.getColumnModel().getColumn(aColumn);
 		    if(table_1.getColumnName(4)!="views_totali") {
-		    	System.out.println("tcol "+table.getColumnName(4));
 		    table_1.removeColumn(tcol);
 		    }
 		    if(table_1.getColumnCount()!=3) {
@@ -463,7 +484,7 @@ public class AlbumFrame extends JFrame{
 		private void ColumnRender2() {
 			for(int i=0; i<table_1.getColumnCount(); i++) {
 		         tColumn = table_1.getColumnModel().getColumn(i);
-		         tColumn.setCellRenderer(new ColumnColorRenderer(Color.white, Color.black));			
+		         tColumn.setCellRenderer(new ColumnColorRenderer(Color.black, Color.white));			
 		}
 			}
 		
@@ -471,7 +492,7 @@ public class AlbumFrame extends JFrame{
 			
 		    	 for(int i=0; i<table.getColumnCount(); i++) {
 			         tColumn = table.getColumnModel().getColumn(i);
-			         tColumn.setCellRenderer(new ColumnColorRenderer(Color.white, Color.black));		     
+			         tColumn.setCellRenderer(new ColumnColorRenderer(Color.black, Color.white));		     
 		    	 }
 			}
 		   //Centra e Colora le singole celle (row)
@@ -497,7 +518,7 @@ public class AlbumFrame extends JFrame{
 						      
 						          if(row==n)
 						    	  cell.setBackground(backgroundColor);
-						          else cell.setBackground(Color.white);
+						          else cell.setBackground(Color.black);
 							     
 						      
 						      return cell;
@@ -512,7 +533,7 @@ public class AlbumFrame extends JFrame{
 			for(int z=0; z<table.getColumnCount();z++) {
 				
 			         tColumn = table.getColumnModel().getColumn(z);
-			         tColumn.setCellRenderer(new RowColorRenderer(Color.lightGray, Color.black,selectedRow));    	 
+			         tColumn.setCellRenderer(new RowColorRenderer(Color.lightGray, Color.white,selectedRow));    	 
 			}
 		}
 		
@@ -594,10 +615,8 @@ public class AlbumFrame extends JFrame{
 			 JFrame frame = new JFrame();
 			    String message = "Inserisci nuovo nome per la traccia: "+table_1.getValueAt(row-1, 1);
 			    String new_name = JOptionPane.showInputDialog(frame, message);
-			    if (new_name == null) {
-			      // User clicked  cancel
-			    }
-			    if(new_name.length()>0) {
+			   
+			    if(new_name.length()>0 ) {
 			main.ModificaTraccia(row, new_name, selectedData, selectedData2);
 			setRightPane(main, selectedData, selectedData2);
 			    }else JOptionPane.showMessageDialog(new JFrame(),
@@ -613,8 +632,7 @@ public class AlbumFrame extends JFrame{
 				 JFrame frame = new JFrame();
 				    String message = "Inserisci una nuova traccia:";
 				    String new_name = JOptionPane.showInputDialog(frame, message);
-				    if (new_name == null) {
-				    }
+				    
 				    if(new_name.length()>0)
 						flag = main.InserisciTraccia(new_name, selectedData, selectedData2);
          		    if(flag==true) {
