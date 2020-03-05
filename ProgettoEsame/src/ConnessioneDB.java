@@ -7,13 +7,6 @@ public class ConnessioneDB
 {
 	public Connection CreaConnessione(String utente, String password, Connection con) 
 	{
-
-		//utente default
-		/*if(utente.equals(""))
-			utente = "postgres";
-		if(password.equals(""))
-			password = "password";*/
-		
 		try
 		{
 			//prendo i driver
